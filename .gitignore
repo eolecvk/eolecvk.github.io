@@ -1,0 +1,27 @@
+# Node.js dependencies
+node_modules/
+
+# Optional npm cache directory
+.npm/
+
+# Environment files
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Package lock files (if you want to ignore them, though usually you don’t)
+# package-lock.json
+
+# IDE settings
+.vscode/
+.idea/
+
+# Coverage directory used by tools like istanbul
+coverage/
