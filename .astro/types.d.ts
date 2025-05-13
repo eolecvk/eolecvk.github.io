@@ -184,7 +184,65 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"config": {
+		"blog": {
+"activate-newsletter.mdx": {
+	id: "activate-newsletter.mdx";
+  slug: "activate-newsletter";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"astro-3-snipcart-starter-template-nebulix-start-your-online-store-in-minutes.mdx": {
+	id: "astro-3-snipcart-starter-template-nebulix-start-your-online-store-in-minutes.mdx";
+  slug: "astro-3-snipcart-starter-template-nebulix-start-your-online-store-in-minutes";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"contact-form.mdx": {
+	id: "contact-form.mdx";
+  slug: "contact-form";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"how-to-customize-the-theme.mdx": {
+	id: "how-to-customize-the-theme.mdx";
+  slug: "how-to-customize-the-theme";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"page-builder-blocks.mdx": {
+	id: "page-builder-blocks.mdx";
+  slug: "page-builder-blocks";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"readme.mdx": {
+	id: "readme.mdx";
+  slug: "readme";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"roadmap.mdx": {
+	id: "roadmap.mdx";
+  slug: "roadmap";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"templates-and-page-styles.mdx": {
+	id: "templates-and-page-styles.mdx";
+  slug: "templates-and-page-styles";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+};
+"config": {
 "about.mdx": {
 	id: "about.mdx";
   slug: "about";
@@ -240,6 +298,29 @@ declare module 'astro:content' {
   body: string;
   collection: "config";
   data: InferEntrySchema<"config">
+} & { render(): Render[".mdx"] };
+};
+"menu": {
+"coctails.mdx": {
+	id: "coctails.mdx";
+  slug: "coctails";
+  body: string;
+  collection: "menu";
+  data: InferEntrySchema<"menu">
+} & { render(): Render[".mdx"] };
+"drinks.mdx": {
+	id: "drinks.mdx";
+  slug: "drinks";
+  body: string;
+  collection: "menu";
+  data: InferEntrySchema<"menu">
+} & { render(): Render[".mdx"] };
+"virgin-coctails.mdx": {
+	id: "virgin-coctails.mdx";
+  slug: "virgin-coctails";
+  body: string;
+  collection: "menu";
+  data: InferEntrySchema<"menu">
 } & { render(): Render[".mdx"] };
 };
 "page": {
