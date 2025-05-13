@@ -24,6 +24,7 @@ const m2dxOptions = {
 // https://astro.build/config
 export default defineConfig({
   site: "https://eolecvk.github.io",
+  base: 'eolecvk.github.io',
   integrations: [
     icon(),
     mdx({}),
