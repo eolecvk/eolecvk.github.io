@@ -1,7 +1,9 @@
 ---
-title: Eole Cervenka, GenAI Consulting
-description: "Prototyping to deploying at scale of generative AI solutions -- LLM agentic application, computer vision"
-intro: "Accelerate your business right now with AI"
+title: Nebulix, a Fast & Green Theme Based on Astro + Static CMS
+description: "A Universe of Possibilities: Blogs, Portfolios, Restaurant Menus,
+  Online Store, and Beyond"
+intro: "A Universe of Possibilities: Blogs, Portfolios, Restaurant Menus, Online
+  Store, and Beyond"
 hero_template: image
 template: full
 container: md
@@ -13,7 +15,14 @@ hero_buttons:
     icon_only: false
     icon: /src/icons/down-line.svg
     color: surface-primary
+  - component: Link
+    label: docs
+    href: /blog/tag/docs
+    class: optional
+    icon_only: false
+    icon: /src/icons/page.svg
 pubDate: Jul 08 2022
+layout-hidden: blog
 blocks:
   - type: features
     component: Features
@@ -102,6 +111,20 @@ blocks:
 
 
       Our perfect 100% page speed score and compliance with WCAG 2.1 AA standards reflect our commitment. We've optimized speed and accessibility, ensuring a superior user experience for all.
+  - type: recentitems
+    component: RecentItems
+    page_type: blog
+    count: 3
+    container: md
+    template: list
+    animate: true
+    post_tag:
+      - Docs
+    title: Check out our documentation
+    surface: bg-slate-200 text-dark dark:bg-slate-800 dark:text-white
+    content: >
+      Getting started is easy, just clone the repo, configure and you are ready
+      to go.
   - type: text_image
     component: TextImage
     container: none

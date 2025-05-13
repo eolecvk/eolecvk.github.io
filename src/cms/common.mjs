@@ -601,7 +601,7 @@ export const blocks = {
           label: t("page_type"),
           name: "page_type",
           widget: "select",
-          options: ["project", "menu"],
+          options: ["blog", "project", "menu"],
           default: "post",
         },
         {
