@@ -1,0 +1,24 @@
+---
+// src/pages/resume.astro
+
+import PageLayoutSplit from "@layouts/PageLayoutSplit.astro";
+import PageLayoutWide from "@layouts/PageLayoutWide.astro";
+import { getEntryBySlug } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+// Fetch the resume content
+const post: CollectionEntry<"resume"> = await getEntryBySlug("resume", "resume");
+const { Content } = await post.render();
+---
+
+{post.data.style.template === "split" && (
+  <PageLayoutSplit {...post.data}>
+    <Content />
+  </PageLayoutSplit>
+)}
+
+{post.data.style.template === "full" && (
+  <PageLayoutWide {...post.data}>
+    <Content />
+  </PageLayoutWide>
+)}
