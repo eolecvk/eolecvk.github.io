@@ -67,7 +67,7 @@ const contact = await getEntry("config", "contact");
     </Footer>
     <Init client:idle />
 
-    <ContactDialog client:idle contact={contact.data.form}>
+    <!-- <ContactDialog client:idle contact={contact.data.form}>
       {
         contact?.data?.form?.intro && (
           <div
@@ -101,7 +101,7 @@ const contact = await getEntry("config", "contact");
         ]}
       />
       <Icon name="close" class="w-6" />
-    </ContactDialog>
+    </ContactDialog> -->
 
     <script>
       const html = document.getElementsByTagName("html")[0];
