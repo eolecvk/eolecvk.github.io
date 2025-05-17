@@ -128,10 +128,12 @@ const hasBlocks = blocks && blocks.length > 0;
     >
       {
         hero_buttons_right && hero_buttons_right.length > 0 && (
-          <div class="inline-flex flex-wrap gap-4 mb-8 justify-end">
-            {hero_buttons_right.map((btn) => (
-              <Button {...btn} />
-            ))}
+          <div class="flex justify-center mb-4 md:mb-2"> {/* Centering and reduced margin */}
+            <div class="inline-flex flex-wrap gap-4">
+              {hero_buttons_right.map((btn) => (
+                <Button {...btn} />
+              ))}
+            </div>
           </div>
         )
       }
