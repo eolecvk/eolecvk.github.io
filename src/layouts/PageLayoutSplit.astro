@@ -20,7 +20,8 @@ const {
   style,
   filter,
   filter_type,
-  hero_buttons,
+  hero_buttons, // Legacy left-side buttons
+  hero_buttons_right, // New right-side buttons
 } = Astro.props;
 
 const { slug } = Astro.params;
@@ -35,7 +36,7 @@ const hasBlocks = blocks && blocks.length > 0;
   {thumbnail}
   {og_image}
 >
-  <div class="page-split__grid">
+  <div class="page-split__grid-alt"> {/* Using the alternative grid layout */}
     <div
       class="z-10"
       id="header"
@@ -85,15 +86,6 @@ const hasBlocks = blocks && blocks.length > 0;
             {intro && <div class="subtitle balance"> {intro}</div>}
 
             {
-              hero_buttons && hero_buttons.length > 0 && (
-                <div class="inline-flex flex-wrap  gap-4 py-8 ">
-                  {hero_buttons.map((btn) => (
-                    <Button {...btn} />
-                  ))}
-                </div>
-              )
-            }
-            {
               tag && (
                 <ItemFilter
                   filters={tag}
@@ -116,17 +108,35 @@ const hasBlocks = blocks && blocks.length > 0;
                 />
               )
             }
+            {/* Legacy left-side buttons - still rendered here */}
+            {
+              hero_buttons && hero_buttons.length > 0 && (
+                <div class="inline-flex flex-wrap gap-4 py-8">
+                  {hero_buttons.map((btn) => (
+                    <Button {...btn} />
+                  ))}
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
     </div>
 
     <div
-      class="page-split__content z-0 mb-0 mt-8 w-full md:max-w-2xl md:pl-0 md:pr-8"
+      class="page-split__content-alt z-0 mb-0 mt-8 w-full md:max-w-2xl md:pl-0 md:pr-8 flex flex-col"
     >
+      {
+        hero_buttons_right && hero_buttons_right.length > 0 && (
+          <div class="inline-flex flex-wrap gap-4 mb-8 justify-end">
+            {hero_buttons_right.map((btn) => (
+              <Button {...btn} />
+            ))}
+          </div>
+        )
+      }
       <div class={`flex h-full flex-col ${hasBlocks ? "pb-10" : "pb-20"}`}>
         <slot />
-
         {!hasBlocks && <slot name="nav" />}
       </div>
     </div>
@@ -161,18 +171,31 @@ const hasBlocks = blocks && blocks.length > 0;
             grid-template-columns: 40vw minmax(0, 1fr);
           }
         }
+        &__grid-alt {
+          @apply grid 2xl:gap-14 ;
+          grid-template-columns: minmax(0, 1fr);
+          @screen md {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          }
+          @screen 2xl {
+            grid-template-columns: 40vw minmax(0, 1fr);
+          }
+        }
         &__title{
-			padding: var(--spacing);
+      padding: var(--spacing);
         }
 
-		&__content {
-			padding-inline: var(--spacing);
-		}
+    &__content {
+      padding-inline: var(--spacing);
+    }
+        &__content-alt {
+          padding-inline: var(--spacing);
+        }
       }
 </style>
 
 <style is:global>
-  .page-split__content {
+  .page-split__content, .page-split__content-alt {
     .img,
     iframe {
       width: calc(100% + var(--container-spacing));
