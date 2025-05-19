@@ -2,120 +2,131 @@
 tag:
   - stable-diffusion
   - generative-ai
-title: All you need is one GPU
-description: Stable Diffusion Inference Benchmark cited by Google Research
-intro: Stable Diffusion Inference Benchmark cited by Google Research
+title: Stable Diffusion Benchmark, cited by Google Research
+description: "All You Need Is One GPU"
+intro: "All You Need Is One GPU"
 features:
-  - name: Citation in Google Research "Muse" paper
+  - name: Author
+    value: Eole Cervenka
+  - name: Citation
     value: https://arxiv.org/pdf/2301.00704#page=17
-blocks:
-  - type: gallery
-    component: ImageGallery
-    title: Image Gallery
-    container: md
-    animate: true
-    images:
-      - title: cosmic Cocktails
-        image: /src/assets/cosmic_moscow_mule.jpeg
-      - title: cosmic Cocktails
-        image: /src/assets/cosmic-aperol-spritz.jpeg
-      - title: cosmic Cocktails
-        image: /src/assets/cosmic_gin_tonic.jpeg
-      - image: /src/assets/cosmic-dark-and-stormy.jpeg
-        title: cosmic Cocktails
-      - title: cosmic Cocktails
-        image: /src/assets/long-island-iced-tea.jpeg
-      - title: cosmic Cocktails
-        image: /src/assets/cosmic_coctails_1.jpg
-    surface: bg-slate-200 text-dark dark:bg-slate-800 dark:text-white
-    aspect: 1
-  - type: text_image
-    component: TextImage
-    container: none
-    template: banner
-    title: My Image
-    image_size: "50"
-    reverse: false
-    animate: false
-    thumbnail: /src/assets/cosmic_coctails_3.jpeg
-    content: >
-      ## Taste of the Stars
-
-
-      As you take your first sip, the flavors unfold like a journey through the Milky Way. The zing of the limes, the coolness of mint, and the warmth of cosmic rum blend seamlessly.
-    buttons: []
-    block_class: my-0
+  - name: Note
+    value: This article was originally published on [Lambda Labs' blog](https://lambda.ai/blog/inference-benchmark-stable-diffusion).
 style:
   template: split
   card_template: grid
   hero_template: image
-  hero_image_opacity: ""
+  hero_image_opacity: "1"
   container: md
   block_class: my-0
-thumbnail: /src/assets/cosmic_mojito.jpeg
+thumbnail: /src/assets/chrono.png
 date: 2023-09-03T10:31:47.439Z
 ---
 
-## Introduction
+# All You Need Is One GPU: Inference Benchmark for Stable Diffusion
 
-When it comes to cocktails, the Mojito stands as a timeless classic, known for its refreshing blend of mint, lime, and rum. But what if we could elevate this beloved drink to cosmic proportions? Join us on a cosmic journey as we explore the perfect cosmic Mojito - a tantalizing concoction that takes your taste buds beyond the stars.
+<br />
+<p align="center">
+  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/thumbnail.png" alt="Stable Diffusion Benchmark" />
+</p>
+<br />
 
-## Unveiling the Cosmic Ingredients
 
-### The Galactic Limes
+**UPDATE 2022-Oct-13 (Turning off autocast for FP16 speeds inference up by 25%)**
 
-At the heart of any great Mojito lies the zesty charm of limes. To create a cosmic twist, we source the finest limes from across the universe, ensuring a burst of citrusy freshness that's out of this world.
+What do I need for running the state-of-the-art text-to-image model? Can a gaming card do the job, or should I get a fancy A100? What if I only have a CPU?
 
-### Stardust Sugar Syrup
+To shed light on these questions, we present an inference benchmark of Stable Diffusion on different GPUs and CPUs. These are our findings:
 
-To sweeten our cosmic creation, we use a unique sugar syrup infused with stardust crystals. This magical touch adds a subtle sweetness that sparkles like the night sky.
+- Many consumer-grade GPUs can do a fine job, since Stable Diffusion only needs about 5 seconds and 5 GB of VRAM to run.
+- When it comes to speed to output a single image, the most powerful Ampere GPU (A100) is only faster than the 3080 by 33% (or 1.85 seconds).
+- By pushing the batch size to the maximum, A100 can deliver 2.5x inference throughput compared to the 3080.
 
-### Celestial Mint Leaves
+Our benchmark uses a text prompt as input and outputs an image of resolution 512x512. We use the model implementation from Hugging Face's [diffusers](https://github.com/huggingface/diffusers) library and analyze inference performance in terms of speed, memory consumption, throughput, and quality of the output images.
 
-Mint is a Mojito essential, and we take it to the next level by cultivating our mint leaves under the light of distant stars. This gives our Mojito a refreshing and slightly exotic flavor.
+We look at how different choices in hardware (GPU model, GPU vs CPU) and software (single vs half precision, PyTorch vs ONNX Runtime) affect inference performance.
 
-### Cosmic Rum Blend
+For reference, we provide benchmark results for the following GPU devices: A100 80GB PCIe, RTX 3090, RTX A5500, RTX A6000, RTX 3080, RTX 8000. Please refer to the "Reproducing the experiments" section for details on running these experiments in your own environment.
 
-Our secret ingredient, the cosmic rum blend, is a harmonious fusion of aged rums from various galaxies. This blend provides a smooth, velvety base with hints of interstellar complexity.
+Last but not least, we are excited to see how quickly things are moving forward by the community. For example, the "[sliced attention](https://github.com/huggingface/diffusers/pull/234)" trick can further reduce the VRAM cost to "as little as 3.2 GB", at a small penalty of about 10% slower inference speed. We also look forward to testing ONNX Runtime with CUDA devices once it becomes more stable in the near future.
 
-[https://www.youtube.com/watch?v=KWU9ZaWbeuQ](https://www.youtube.com/watch?v=KWU9ZaWbeuQ)
+## Speed
 
-## Mixing the Elixir
+The figure below shows the inference speed when using different hardware and precision for generating a single image using the (arbitrary) text prompt: "a photo of an astronaut riding a horse on Mars".
 
-### A Cosmic Symphony
+<p align="center">
+  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/speed.png" alt="Stable Diffusion Text2Image Speed" />
+  <br />
+  <b>Stable Diffusion Text2Image Speed (in seconds)</b>
+</p>
 
-Creating the perfect cosmic Mojito is akin to conducting a symphony of flavors. The limes, stardust syrup, mint, and cosmic rum blend come together in a celestial dance.
+We find that:
 
-### The Art of Muddling
+- The time to generate a single output image ranges between 3.74 to 5.59 seconds across our tested Ampere GPUs, from the consumer 3080 card to the flagship A100 80GB card.
+- Half-precision reduces the time by about 40% for Ampere GPUs and by 52% for the previous generation RTX 8000 GPU.
+- We believe Ampere GPUs enjoy a relatively "smaller" speedup from half-precision due to their use of TF32. For readers unfamiliar with TF32, it is a 19-bit format that has been used as the default single-precision data type on Ampere GPUs for major deep learning frameworks such as PyTorch and TensorFlow. One can expect half-precision's speedup over FP32 to be bigger since FP32 is a true 32-bit format.
+- We run these same inference jobs on CPU devices to put in perspective the performance observed on GPU devices.
 
-Muddling the mint and limes is a crucial step. The fragrance released as you gently crush the mint leaves is a prelude to the Mojito's heavenly aroma.
+<p align="center">
+  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/gpu_vs_cpu.png" alt="Stable Diffusion Text2Image GPU vs CPU" />
+  <br />
+  <b>Stable Diffusion Text2Image GPU vs CPU</b>
+</p>
 
-### Galactic Chill
+We note that:
 
-We ensure our Mojito is served at the ideal cosmic temperature, with ice made from water harvested from distant comets. This ensures a crisp, frosty sip every time.
+- GPUs are significantly faster — by one or two orders of magnitude depending on the precision.
+- ONNX Runtime can reduce the CPU inference time by about 40% to 50%, depending on the type of CPUs.
+- As a side note, ONNX Runtime currently does not have stable CUDA backend support for Hugging Face diffusers, nor did we observe meaningful speedup in our preliminary `CUDAExecutionProvider` tests. We look forward to conducting a more thorough benchmark once ONNX Runtime becomes more optimized for Stable Diffusion.
 
-## The Cosmic Presentation
+## Memory
 
-### Nebula Garnish
+We also measure the memory consumption of running Stable Diffusion inference.
 
-To truly make the perfect cosmic Mojito a sight to behold, we adorn it with a garnish that mimics the vibrant colors of a nebula. This visual spectacle adds to the overall cosmic experience.
+<p align="center">
+  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/memory.png" alt="Stable Diffusion Text2Image Memory" />
+  <br />
+  <b>Stable Diffusion Text2Image Memory (GB)</b>
+</p>
 
-## Sipping into the Cosmos
+Memory usage is observed to be consistent across all tested GPUs:
 
-### Taste of the Stars
+- It takes about 7.7 GB of GPU memory to run single-precision inference with batch size one.
+- It takes about 4.5 GB of GPU memory to run half-precision inference with batch size one.
 
-As you take your first sip, the flavors unfold like a journey through the Milky Way. The zing of the limes, the coolness of mint, and the warmth of cosmic rum blend seamlessly.
+## Throughput
 
-### Otherworldly Aromas
+So far we have measured how quickly a single input can be processed, which is critical for online applications that don't tolerate even the slightest delay. However, some (offline) applications may focus on "throughput", which measures the total volume of data processed in a fixed amount of time.
 
-The aroma is equally enchanting, reminiscent of stargazing on a clear night. Each whiff carries a hint of celestial mystery.
+Our throughput benchmark pushes the batch size to the maximum for each GPU and measures the number of images they can process per minute. The reason for maximizing the batch size is to keep tensor cores busy so that computation dominates the workload, avoiding any non-computational bottleneck and maximizing the throughput.
 
-### A Cosmic Afterglow
+We run a series of throughput experiments in PyTorch with half-precision and using the maximum batch size that can be used for each GPU:
 
-The aftertaste leaves you with a sense of cosmic wonder, lingering long after the last drop has vanished. It's a taste that lingers in your memory.
+<p align="center">
+  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/throughput.png" alt="Stable Diffusion Text2Image Throughput" />
+  <br />
+  <b>Stable Diffusion Text2Image Throughput (images/minute)</b>
+</p>
 
-## Conclusion
+We note:
 
-In crafting the perfect cosmic Mojito, we've embarked on a journey through the cosmos, combining flavors and elements from the far reaches of the universe. This drink is not just a beverage; it's an experience, an exploration of taste and aroma that transcends ordinary cocktails.
+- Once again, A100 80GB is the top performer and has the highest throughput.
+- The gap between A100 80GB and other cards in terms of throughput can be explained by the larger maximum batch size that can be used on this card.
+- As a concrete example, the chart below shows how A100 80GB's throughput increases by 64% when we change the batch size from one to 28 (the largest without causing an out-of-memory error). It is also interesting to see that the increase is not linear and flattens out when batch size reaches a certain value — at which point the tensor cores on the GPU are saturated and any new data in the GPU memory will have to be queued before getting its own computing resources.
 
-So, the next time you crave a Mojito, consider taking your taste buds on a cosmic adventure. Discover the magic of our cosmic Mojito, where each sip is a voyage to the stars.
+<p align="center">
+  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/batch_size_vs_throughput.png" alt="Stable Diffusion Text2Image Batch size vs Throughput" />
+  <br />
+  <b>Stable Diffusion Text2Image Batch size vs Throughput (images/minute)</b>
+</p>
+
+## Autocast
+
+An update made by the Hugging Face team to the diffusers code showed that removing autocast speeds up inference with PyTorch at half-precision by ~25%.
+
+With autocast:
+
+```python
+with autocast("cuda"):
+    image = pipe(prompt).images[0]
+```
