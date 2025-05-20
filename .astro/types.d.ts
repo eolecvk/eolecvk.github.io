@@ -503,9 +503,9 @@ declare module 'astro:content' {
 } & { render(): Render[".mdx"] };
 };
 "project": {
-"evaluation-pipeline-for-LLM-evaluation.mdx": {
-	id: "evaluation-pipeline-for-LLM-evaluation.mdx";
-  slug: "evaluation-pipeline-for-llm-evaluation";
+"evaluation-pipeline-for-LLM-pipeline.mdx": {
+	id: "evaluation-pipeline-for-LLM-pipeline.mdx";
+  slug: "evaluation-pipeline-for-llm-pipeline";
   body: string;
   collection: "project";
   data: InferEntrySchema<"project">
