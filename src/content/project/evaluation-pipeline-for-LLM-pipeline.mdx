@@ -56,10 +56,13 @@ This is where **worklow evaluation** and **tracing** come in.
 
 In this article, we’ll explore evaluation and tracing for production-grade LLM applications. We’ll cover our integration of tracing into the ML Times’ pipeline and the key lessons we learned for optimizing LLM performance and reliability.
 
-We used **LangSmith** for pipeline tracing, chain versioning, and prompt comparisons—though in hindsight, we’d consider open-source options like **LangFuse** to avoid vendor lock-in.
 
 
 ### Pipeline overview
+
+We used **LangSmith** for pipeline tracing, chain versioning, and experiments — though in hindsight, we’d consider open-source options like **LangFuse** to avoid vendor lock-in.
+
+
 
 **Article Ingestion**  
 
@@ -71,7 +74,7 @@ Not all articles are relevant to the ML community, so the next step is filtering
 
 An LLM is prompted to identify whether a given article is actually relevant to ML practitioners.
 
-* This step is relatively straightforward to evaluate because **we can build a labelled testing dataset** to measure expected accuracy, true positive rate, and so on.
+* This step is relatively straightforward to evaluate because **we can build a labelled testing dataset** to measure expected accuracy, true positive rate, and so on. Required lots of manual work to label relevance accurately but also sparked product discussions around what *should* be covered.
 * **I achieved better accuracy by prompting for a *1–5 relevance score*, with carefully designed grading criteria over prompting for a binary classification decision.** Specifically, models would be much better at correctly classifying borderline articles and the ability to rank articles based on relevance turned out useful as well. 
 * Prompting the model to **include a justification for its filtering decision provides insights into how to update the prompt to fix errors in classifications.**
 * The relevance filter is **more accurate when processing the full article instead of the summarized article** but also more expensive (ie more input token per run).
@@ -85,9 +88,6 @@ For relevant articles, we prompt LLMs to produce short summaries (3 bullet point
 * **This step is not straightforward to evaluate as we cannot easily measure against a reference dataset.**
 * I used a **LLM-as-evaluator workflow** that compares the summaries of two competing summarization worklows and select on the best one. This requires to trust the evaluator model decisions and a careful experiment implementation to avoid biased evaluations. 
 * **Stronger models significantly outperformed weaker model on this task** — particularly on capturing signal over fluff and writing fluid, readable summaries.
-
-
-
 
 
 
@@ -114,19 +114,16 @@ For relevant articles, we prompt LLMs to produce short summaries (3 bullet point
 
 ### Challenges & Decisions
 
-#### Building a Ground-Truth Dataset
-- Required lots of manual work to label relevance accurately
-- Sparked product discussions around what *should* be covered and how to define a “quality summary”
 
 #### Experiment Budgeting
 - Full sweeps across models × prompts × chains can get expensive
-- We had to prioritize experiments likely to yield high signal
+- As a rule of thumb I start with identifying which model to use for each step and then run prompt engineering experiment for that specific task using that specific model; it makes sense not to frontload prompt engineering because different model perform best with different prompt.
+- Summarization is critical and has low volume whereas classifation has large volume and can tolerate some false negatives; therefore we can easily allocate the best model available to summarization but we may want to experiment with cheaper models for classification if needed.
 
-#### ⚖️ Balancing Speed, Cost, and Quality
+
+#### Balancing Speed, Cost, and Quality
 - We ran open-source models as first-pass filters
 - Ran expensive evals only on shortlists or benchmarks
-- Used explanations in outputs to guide prompt iterations
-
 
 ### Looking Ahead
 
