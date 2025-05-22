@@ -29,9 +29,12 @@ const { content, container, features } = Astro.props;
                   <Icon name={getIconName(feature.icon)} class={`h-8 w-8 `} />
                 </div>
               )}
+              <div class="px-4 py-4">
+                <strong>{feature.name}</strong>
+              </div>
               <div
-                set:html={marked.parse(feature.content)}
-                class="richtext no-lead px-4 py-8"
+                set:html={marked.parse(feature.value)}
+                class="richtext no-lead px-4 pb-8"
               />
             </li>
           ))}

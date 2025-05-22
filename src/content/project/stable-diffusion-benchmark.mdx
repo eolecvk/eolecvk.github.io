@@ -3,15 +3,11 @@ tag:
   - stable-diffusion
   - generative-ai
 title: Stable Diffusion Benchmark, cited by Google Research
-description: "All You Need Is One GPU"
+description: "We benchmark Stable Diffusion inference on GPUs and CPUs including A100, 3090, and more—measuring speed, memory, throughput, and output quality."
 intro: "All You Need Is One GPU"
 features:
   - name: Author
     value: Eole Cervenka
-  - name: Citation
-    value: https://arxiv.org/pdf/2301.00704#page=17
-  - name: Note
-    value: This article was originally published on [Lambda Labs' blog](https://lambda.ai/blog/inference-benchmark-stable-diffusion).
 style:
   template: split
   card_template: grid
@@ -162,9 +158,6 @@ We are curious about whether half-precision introduces degradations to the quali
 </p>
 <br />
 
-In conclusion: **DO NOT use autocast in conjunction with FP16.**
-
-
 Our observation is that there are indeed visible differences between the single-precision output and the half-precision output, especially in the early steps. The differences often decrease with the number of steps, but might not vanish.
 
 Interestingly, such a difference may not imply artifacts in half-precision's outputs. For example, in step 70, the picture below shows half-precision didn't produce the artifact in the single-precision output (an extra front leg):
@@ -187,7 +180,7 @@ Before running the benchmark, make sure you have completed the repository [insta
 #### You will then need to set the huggingface access token:
 
 1. Create a user account on Hugging Face and generate an access token.
-.2 Set your huggingface access token as the ACCESS_TOKEN environment variable:
+2. Set your huggingface access token as the ACCESS_TOKEN environment variable:
 
 ```
 export ACCESS_TOKEN=<hf_...> 
@@ -209,3 +202,7 @@ python ./scripts/benchmark_quality.py
 #### Footnotes
 
 1. Since both text prompt as well as the "latents" input are fixed for each run, this is equivalent to running the inference for 100 steps, and save the intermediate results of each step.
+
+### Credits
+
+*Article originally published in the [Lambda Blog](https://lambda.ai/blog/inference-benchmark-stable-diffusion) and [cited in Google Research "Muse" paper](https://arxiv.org/pdf/2301.00704#page=17).*
