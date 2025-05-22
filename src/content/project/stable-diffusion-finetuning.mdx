@@ -11,7 +11,7 @@ features:
   - name: Teaching stable-diffusion Avatar style using dreambooth (HuggingFace)
     value: https://huggingface.co/lambdalabs/dreambooth-avatar
 style:
-  template: split
+  template: full
   card_template: grid
   hero_template: image
   hero_image_opacity: ""
@@ -21,4 +21,31 @@ thumbnail: /src/assets/naruto-sd.png
 date: 2023-09-03T10:31:47.439Z
 ---
 
-Article in construction
+# Training stable-diffusion to generate new styles
+
+
+We present a couple examples of finetuning the `text-to-image` stable-diffusion model to learn new styles (e: "Naruto", "Avatar"). Note that a similar methodology can be applied to learn the representation of a new object or identity to the base model.
+
+## Stable diffusion finetuning
+
+**Training data**
+
+The first step is to collect hundreds of data sample for the style to learn.
+The original images were obtained from narutopedia.com and captioned with the pre-trained [BLIP model](https://github.com/salesforce/BLIP).
+
+For each row the dataset contains image and text keys. image is a varying size `PIL` `jpeg`, and `text` is the accompanying text caption.
+
+With the recent progresses of multimodal LLMs, I would probably use that instead for building labelled datasets from raw images.
+
+The [Naruto dataset can be found on HuggingFace](https://huggingface.co/datasets/lambdalabs/naruto-blip-captions) for reference.
+
+<br />
+<p align="center">
+  <img src="/src/assets/sd-finetune-1.png" alt="Stable Diffusion Benchmark" />
+</p>
+<br />
+
+
+## Stable diffusion finetuning with dreambooth
+
+The second method uses [dreambooth](https://dreambooth.github.io/), a finetuning implementation of stable diffusion developped by Google.

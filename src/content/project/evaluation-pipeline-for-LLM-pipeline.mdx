@@ -5,9 +5,6 @@ tag:
 title: Behind the Scenes of an AI-Powered News Site
 description: Trace, monitor and optimize an LLM chain in production
 intro: A tale of LLM pipeline evaluation and tracing
-features:
-  - name: MLTimes
-    value: https://news.lambda.ai
 hero_buttons:
   - component: Link
     label: Read article
@@ -95,29 +92,20 @@ For relevant articles, we prompt LLMs to produce short summaries (3 bullet point
 * **Stronger models significantly outperformed weaker model on this task** — particularly on capturing signal over fluff and writing fluid, readable summaries.
 
 
-### Challenges & Decisions
+### Challenges & Decisions  
 
-
-#### Experiment Budgeting
-- Full sweeps across models × prompts × chains can get expensive
-- As a rule of thumb I start with identifying which model to use for each step and then run prompt engineering experiment for that specific task using that specific model; it makes sense not to frontload prompt engineering because different model perform best with different prompt.
-- Summarization is critical and has low volume whereas classifation has large volume and can tolerate some false negatives; therefore we can easily allocate the best model available to summarization but we may want to experiment with cheaper models for classification if needed.
-
-
-#### Balancing Speed, Cost, and Quality
-- llama 70B is more cost efficient than GPT models and has similar true negative rate performance as GPT-4
-- We had the option to use the open source model as a first pass filter to reduce the number of calls to the more expensive models.
+Full sweeps across models × prompts × chains can get expensive. It's key to prioritize experiments that matter. As a rule of thumb I start with identifying which model I will use for a specific task depending on expected performance (reasoning, high quality writting, ability to comply with a specific output format and so on).
+Then, I focus my experiments on engineering the best prompts for a specific outcome. In case I need to compare two competing models for a given task, I perform indepedent prompt engineering on both models because based on my experience so far, models have different optimal prompts for a given task.
 
 
 ### Conclusion
 
-Building ML Times was not just about generating text—it was about building trust. The combination of:
-- a thoughtful LLM pipeline,
-- a strong evaluation backbone,
-- and continuous improvement through model/prompt testing
+Tracing and evaluation are both essential for deploying robust LLM applications in production. Tracing serves as a foundation for monitoring, allowing us to pinpoint where and why issues occur within the system. For example:
+    - *Why did a relevant news article not appear on the front page?*
+    Tracing can reveal whether the ingestion pipeline failed or if a filtering agent mistakenly flagged the article as irrelevant.
+    - *Why is key information missing from a summary?*
+    We might discover that the ingestion process failed to capture the full content of the article.
 
-...allowed us to deliver readable, relevant, and reliable machine learning news—powered entirely by LLMs.
-
-For anyone building LLM products at scale: don’t just build the output. Build the evaluators too.
+When issues arise at the LLM step or with its inputs, we can add the problematic run to our evaluation dataset. This enables us to validate that proposed fixes resolve the issue and do not introduce regressions—closing the feedback loop between tracing and evaluation.
 
 ---
