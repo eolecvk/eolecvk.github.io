@@ -27,16 +27,14 @@ date: 2023-09-03T10:31:47.439Z
 
 <br />
 <p align="center">
-  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/thumbnail.png" alt="Stable Diffusion Benchmark" />
+  <img src="/src/assets/sd-bench-1.png" alt="Stable Diffusion Benchmark" />
 </p>
 <br />
 
 
-**UPDATE 2022-Oct-13 (Turning off autocast for FP16 speeds inference up by 25%)**
-
 What do I need for running the state-of-the-art text-to-image model? Can a gaming card do the job, or should I get a fancy A100? What if I only have a CPU?
 
-To shed light on these questions, we present an inference benchmark of Stable Diffusion on different GPUs and CPUs. These are our findings:
+To shed light on these questions, we present an [inference benchmark](https://github.com/LambdaLabsML/lambda-diffusers/tree/eole/benchmarking#benchmarking-inference) of Stable Diffusion on different GPUs and CPUs. These are our findings:
 
 - Many consumer-grade GPUs can do a fine job, since Stable Diffusion only needs about 5 seconds and 5 GB of VRAM to run.
 - When it comes to speed to output a single image, the most powerful Ampere GPU (A100) is only faster than the 3080 by 33% (or 1.85 seconds).
@@ -54,11 +52,12 @@ Last but not least, we are excited to see how quickly things are moving forward 
 
 The figure below shows the inference speed when using different hardware and precision for generating a single image using the (arbitrary) text prompt: "a photo of an astronaut riding a horse on Mars".
 
+<br />
 <p align="center">
-  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/speed.png" alt="Stable Diffusion Text2Image Speed" />
-  <br />
-  <b>Stable Diffusion Text2Image Speed (in seconds)</b>
+  <img src="/src/assets/sd-bench-2.png" alt="Stable Diffusion Benchmark" />
 </p>
+<br />
+
 
 We find that:
 
@@ -67,11 +66,11 @@ We find that:
 - We believe Ampere GPUs enjoy a relatively "smaller" speedup from half-precision due to their use of TF32. For readers unfamiliar with TF32, it is a 19-bit format that has been used as the default single-precision data type on Ampere GPUs for major deep learning frameworks such as PyTorch and TensorFlow. One can expect half-precision's speedup over FP32 to be bigger since FP32 is a true 32-bit format.
 - We run these same inference jobs on CPU devices to put in perspective the performance observed on GPU devices.
 
+<br />
 <p align="center">
-  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/gpu_vs_cpu.png" alt="Stable Diffusion Text2Image GPU vs CPU" />
-  <br />
-  <b>Stable Diffusion Text2Image GPU vs CPU</b>
+  <img src="/src/assets/sd-bench-3.png" alt="Stable Diffusion Benchmark" />
 </p>
+<br />
 
 We note that:
 
@@ -83,11 +82,11 @@ We note that:
 
 We also measure the memory consumption of running Stable Diffusion inference.
 
+<br />
 <p align="center">
-  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/memory.png" alt="Stable Diffusion Text2Image Memory" />
-  <br />
-  <b>Stable Diffusion Text2Image Memory (GB)</b>
+  <img src="/src/assets/sd-bench-4.png" alt="Stable Diffusion Benchmark" />
 </p>
+<br />
 
 Memory usage is observed to be consistent across all tested GPUs:
 
@@ -102,11 +101,11 @@ Our throughput benchmark pushes the batch size to the maximum for each GPU and m
 
 We run a series of throughput experiments in PyTorch with half-precision and using the maximum batch size that can be used for each GPU:
 
+<br />
 <p align="center">
-  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/throughput.png" alt="Stable Diffusion Text2Image Throughput" />
-  <br />
-  <b>Stable Diffusion Text2Image Throughput (images/minute)</b>
+  <img src="/src/assets/sd-bench-5.png" alt="Stable Diffusion Benchmark" />
 </p>
+<br />
 
 We note:
 
@@ -114,11 +113,11 @@ We note:
 - The gap between A100 80GB and other cards in terms of throughput can be explained by the larger maximum batch size that can be used on this card.
 - As a concrete example, the chart below shows how A100 80GB's throughput increases by 64% when we change the batch size from one to 28 (the largest without causing an out-of-memory error). It is also interesting to see that the increase is not linear and flattens out when batch size reaches a certain value — at which point the tensor cores on the GPU are saturated and any new data in the GPU memory will have to be queued before getting its own computing resources.
 
+<br />
 <p align="center">
-  <img src="https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd_benchmark/batch_size_vs_throughput.png" alt="Stable Diffusion Text2Image Batch size vs Throughput" />
-  <br />
-  <b>Stable Diffusion Text2Image Batch size vs Throughput (images/minute)</b>
+  <img src="/src/assets/sd-bench-6.png" alt="Stable Diffusion Benchmark" />
 </p>
+<br />
 
 ## Autocast
 
@@ -130,3 +129,83 @@ With autocast:
 with autocast("cuda"):
     image = pipe(prompt).images[0]
 ```
+
+Without autocast:
+```
+image = pipe(prompt).images[0] 
+```
+
+We reproduced the experiment on NVIDIA RTX A6000 and have been able to verify performance gains both on the speed and memory usage side. We expect similar improvements with other devices that support half-precision.
+
+<br />
+<p align="center">
+  <img src="/src/assets/sd-bench-7.jpeg" alt="Stable Diffusion Benchmark" />
+</p>
+<br />
+
+<br />
+<p align="center">
+  <img src="/src/assets/sd-bench-8.jpeg" alt="Stable Diffusion Benchmark" />
+</p>
+<br />
+
+In conclusion: **DO NOT use autocast in conjunction with FP16.**
+
+
+Precision
+
+We are curious about whether half-precision introduces degradations to the quality of the output images. To test this out, we fixed the text prompt as well as the "latents" input and fed them to the single-precision model and the half-precision model. We ran the inference 100 times with increased number of steps. Both models' outputs, as well as their difference map, are saved for each run.
+
+<br />
+<p align="center">
+  <img src="/src/assets/sd-bench-9.gif" alt="Stable Diffusion Benchmark" />
+</p>
+<br />
+
+In conclusion: **DO NOT use autocast in conjunction with FP16.**
+
+
+Our observation is that there are indeed visible differences between the single-precision output and the half-precision output, especially in the early steps. The differences often decrease with the number of steps, but might not vanish.
+
+Interestingly, such a difference may not imply artifacts in half-precision's outputs. For example, in step 70, the picture below shows half-precision didn't produce the artifact in the single-precision output (an extra front leg):
+
+<br />
+<p align="center">
+  <img src="/src/assets/sd-bench-10.png" alt="Stable Diffusion Benchmark" />
+</p>
+<br />
+
+
+### Reproducing the experiments
+
+You can use the Lambda Diffusers repository to reproduce the results presented in this article.
+
+Setup
+
+Before running the benchmark, make sure you have completed the repository installation steps.
+
+#### You will then need to set the huggingface access token:
+
+1. Create a user account on Hugging Face and generate an access token.
+.2 Set your huggingface access token as the ACCESS_TOKEN environment variable:
+
+```
+export ACCESS_TOKEN=<hf_...> 
+```
+
+#### Usage
+
+Launch the `benchmark.py` script to append benchmark results to the existing benchmark.csv results file:
+```
+python ./scripts/benchmark.py
+```
+
+Lauch the benchmark_quality.py script to compare the output of single-precision and half-precision models:
+```
+python ./scripts/benchmark_quality.py
+```
+
+
+#### Footnotes
+
+1. Since both text prompt as well as the "latents" input are fixed for each run, this is equivalent to running the inference for 100 steps, and save the intermediate results of each step.
