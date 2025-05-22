@@ -34,19 +34,19 @@ date: 2023-09-03T10:31:47.439Z
 
 What do I need for running the state-of-the-art text-to-image model? Can a gaming card do the job, or should I get a fancy A100? What if I only have a CPU?
 
-To shed light on these questions, we present an [inference benchmark](https://github.com/LambdaLabsML/lambda-diffusers/tree/eole/benchmarking#benchmarking-inference) of Stable Diffusion on different GPUs and CPUs. These are our findings:
+To shed light on these questions, we present an [inference benchmark](https://github.com/LambdaLabsML/lambda-diffusers/tree/eole/benchmarking#benchmarking-inference) of [Stable Diffusion](https://huggingface.co/CompVis/stable-diffusion) on different GPUs and CPUs. These are our findings:
 
 - Many consumer-grade GPUs can do a fine job, since Stable Diffusion only needs about 5 seconds and 5 GB of VRAM to run.
 - When it comes to speed to output a single image, the most powerful Ampere GPU (A100) is only faster than the 3080 by 33% (or 1.85 seconds).
 - By pushing the batch size to the maximum, A100 can deliver 2.5x inference throughput compared to the 3080.
 
-Our benchmark uses a text prompt as input and outputs an image of resolution 512x512. We use the model implementation from Hugging Face's [diffusers](https://github.com/huggingface/diffusers) library and analyze inference performance in terms of speed, memory consumption, throughput, and quality of the output images.
+Our benchmark uses a text prompt as input and outputs an image of resolution 512x512. We use the model implementation from [Hugging Face's diffusers](https://github.com/huggingface/diffusers) library and analyze inference performance in terms of speed, memory consumption, throughput, and quality of the output images.
 
 We look at how different choices in hardware (GPU model, GPU vs CPU) and software (single vs half precision, PyTorch vs ONNX Runtime) affect inference performance.
 
 For reference, we provide benchmark results for the following GPU devices: A100 80GB PCIe, RTX 3090, RTX A5500, RTX A6000, RTX 3080, RTX 8000. Please refer to the "Reproducing the experiments" section for details on running these experiments in your own environment.
 
-Last but not least, we are excited to see how quickly things are moving forward by the community. For example, the "[sliced attention](https://github.com/huggingface/diffusers/pull/234)" trick can further reduce the VRAM cost to "as little as 3.2 GB", at a small penalty of about 10% slower inference speed. We also look forward to testing ONNX Runtime with CUDA devices once it becomes more stable in the near future.
+Last but not least, we are excited to see how quickly things are moving forward by the community. For example, the "[sliced attention](https://huggingface.co/docs/diffusers/main/en/optimization/fp16#sliced-attention-for-additional-memory-savings)" trick can further reduce the VRAM cost to "as little as 3.2 GB", at a small penalty of about 10% slower inference speed. We also look forward to testing [ONNX Runtime with CUDA devices](https://github.com/huggingface/diffusers/issues/489) once it becomes more stable in the near future.
 
 ## Speed
 
@@ -63,7 +63,7 @@ We find that:
 
 - The time to generate a single output image ranges between 3.74 to 5.59 seconds across our tested Ampere GPUs, from the consumer 3080 card to the flagship A100 80GB card.
 - Half-precision reduces the time by about 40% for Ampere GPUs and by 52% for the previous generation RTX 8000 GPU.
-- We believe Ampere GPUs enjoy a relatively "smaller" speedup from half-precision due to their use of TF32. For readers unfamiliar with TF32, it is a 19-bit format that has been used as the default single-precision data type on Ampere GPUs for major deep learning frameworks such as PyTorch and TensorFlow. One can expect half-precision's speedup over FP32 to be bigger since FP32 is a true 32-bit format.
+- We believe Ampere GPUs enjoy a relatively "smaller" speedup from half-precision due to their use of TF32. For readers unfamiliar with TF32, it is a [19-bit format](https://blogs.nvidia.com/blog/2020/05/14/tensorfloat-32-precision-format/) that has been used as the default single-precision data type on Ampere GPUs for major deep learning frameworks such as PyTorch and TensorFlow. One can expect half-precision's speedup over FP32 to be bigger since FP32 is a true 32-bit format.
 - We run these same inference jobs on CPU devices to put in perspective the performance observed on GPU devices.
 
 <br />
@@ -76,7 +76,7 @@ We note that:
 
 - GPUs are significantly faster — by one or two orders of magnitude depending on the precision.
 - ONNX Runtime can reduce the CPU inference time by about 40% to 50%, depending on the type of CPUs.
-- As a side note, ONNX Runtime currently does not have stable CUDA backend support for Hugging Face diffusers, nor did we observe meaningful speedup in our preliminary `CUDAExecutionProvider` tests. We look forward to conducting a more thorough benchmark once ONNX Runtime becomes more optimized for Stable Diffusion.
+- As a side note, ONNX Runtime currently does not have stable [CUDA backend support](https://github.com/huggingface/diffusers/issues/489) for Hugging Face diffusers, nor did we observe meaningful speedup in our preliminary `CUDAExecutionProvider` tests. We look forward to conducting a more thorough benchmark once ONNX Runtime becomes [more optimized](https://github.com/huggingface/diffusers/issues/489#issuecomment-1261577250) for Stable Diffusion.
 
 ## Memory
 
@@ -121,7 +121,7 @@ We note:
 
 ## Autocast
 
-An update made by the Hugging Face team to the diffusers code showed that removing autocast speeds up inference with PyTorch at half-precision by ~25%.
+An [update made by the Hugging Face team to the diffusers code](https://github.com/huggingface/diffusers/pull/511) claimed that removing autocast speeds up inference with PyTorch at half-precision by ~25%.
 
 With autocast:
 
@@ -178,11 +178,11 @@ Interestingly, such a difference may not imply artifacts in half-precision's out
 
 ### Reproducing the experiments
 
-You can use the Lambda Diffusers repository to reproduce the results presented in this article.
+You can use the [Lambda Diffusers repository](https://github.com/LambdaLabsML/lambda-diffusers) to reproduce the results presented in this article.
 
 Setup
 
-Before running the benchmark, make sure you have completed the repository installation steps.
+Before running the benchmark, make sure you have completed the repository [installation steps](https://github.com/LambdaLabsML/lambda-diffusers#installation.).
 
 #### You will then need to set the huggingface access token:
 
