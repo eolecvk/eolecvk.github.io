@@ -338,6 +338,13 @@ declare module 'astro:content' {
   collection: "page";
   data: InferEntrySchema<"page">
 } & { render(): Render[".mdx"] };
+"index_w_services.mdx": {
+	id: "index_w_services.mdx";
+  slug: "index_w_services";
+  body: string;
+  collection: "page";
+  data: InferEntrySchema<"page">
+} & { render(): Render[".mdx"] };
 "kickstart-your-project.mdx": {
 	id: "kickstart-your-project.mdx";
   slug: "kickstart-your-project";
