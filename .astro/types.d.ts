@@ -184,7 +184,72 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"blog": {
+		"archive": {
+"about-nebulix.mdx": {
+	id: "about-nebulix.mdx";
+  slug: "about-nebulix";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"crafting-the-perfect-cosmic-mojito.mdx": {
+	id: "crafting-the-perfect-cosmic-mojito.mdx";
+  slug: "crafting-the-perfect-cosmic-mojito";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"index_w_services.mdx": {
+	id: "index_w_services.mdx";
+  slug: "index_w_services";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"kickstart-your-project.mdx": {
+	id: "kickstart-your-project.mdx";
+  slug: "kickstart-your-project";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"license.mdx": {
+	id: "license.mdx";
+  slug: "license";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"pricing.mdx": {
+	id: "pricing.mdx";
+  slug: "pricing";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"project-a.mdx": {
+	id: "project-a.mdx";
+  slug: "project-a";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"shop.mdx": {
+	id: "shop.mdx";
+  slug: "shop";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+"unveiling-the-galactic-pluche-collection.mdx": {
+	id: "unveiling-the-galactic-pluche-collection.mdx";
+  slug: "unveiling-the-galactic-pluche-collection";
+  body: string;
+  collection: "archive";
+  data: any
+} & { render(): Render[".mdx"] };
+};
+"blog": {
 "activate-newsletter.mdx": {
 	id: "activate-newsletter.mdx";
   slug: "activate-newsletter";
@@ -324,51 +389,9 @@ declare module 'astro:content' {
 } & { render(): Render[".mdx"] };
 };
 "page": {
-"about-nebulix.mdx": {
-	id: "about-nebulix.mdx";
-  slug: "about-nebulix";
-  body: string;
-  collection: "page";
-  data: InferEntrySchema<"page">
-} & { render(): Render[".mdx"] };
 "index.mdx": {
 	id: "index.mdx";
   slug: "index";
-  body: string;
-  collection: "page";
-  data: InferEntrySchema<"page">
-} & { render(): Render[".mdx"] };
-"index_w_services.mdx": {
-	id: "index_w_services.mdx";
-  slug: "index_w_services";
-  body: string;
-  collection: "page";
-  data: InferEntrySchema<"page">
-} & { render(): Render[".mdx"] };
-"kickstart-your-project.mdx": {
-	id: "kickstart-your-project.mdx";
-  slug: "kickstart-your-project";
-  body: string;
-  collection: "page";
-  data: InferEntrySchema<"page">
-} & { render(): Render[".mdx"] };
-"license.mdx": {
-	id: "license.mdx";
-  slug: "license";
-  body: string;
-  collection: "page";
-  data: InferEntrySchema<"page">
-} & { render(): Render[".mdx"] };
-"pricing.mdx": {
-	id: "pricing.mdx";
-  slug: "pricing";
-  body: string;
-  collection: "page";
-  data: InferEntrySchema<"page">
-} & { render(): Render[".mdx"] };
-"shop.mdx": {
-	id: "shop.mdx";
-  slug: "shop";
   body: string;
   collection: "page";
   data: InferEntrySchema<"page">
@@ -537,29 +560,6 @@ declare module 'astro:content' {
   body: string;
   collection: "project";
   data: InferEntrySchema<"project">
-} & { render(): Render[".mdx"] };
-};
-"project-archive": {
-"crafting-the-perfect-cosmic-mojito.mdx": {
-	id: "crafting-the-perfect-cosmic-mojito.mdx";
-  slug: "crafting-the-perfect-cosmic-mojito";
-  body: string;
-  collection: "project-archive";
-  data: any
-} & { render(): Render[".mdx"] };
-"project-a.mdx": {
-	id: "project-a.mdx";
-  slug: "project-a";
-  body: string;
-  collection: "project-archive";
-  data: any
-} & { render(): Render[".mdx"] };
-"unveiling-the-galactic-pluche-collection.mdx": {
-	id: "unveiling-the-galactic-pluche-collection.mdx";
-  slug: "unveiling-the-galactic-pluche-collection";
-  body: string;
-  collection: "project-archive";
-  data: any
 } & { render(): Render[".mdx"] };
 };
 "resume": {

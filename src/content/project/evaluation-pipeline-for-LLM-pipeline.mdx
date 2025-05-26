@@ -34,49 +34,37 @@ date: 2023-09-03T10:31:47.439Z
 
 Everyday, ML Times backend scans hundreds of sources, selects the most relevant stories, and produces concise summaries.
 Note that some of these steps involve programmatic steps (e.g., extracting article text from a web page), while others involve LLM calls (e.g., summarizing an article).
-We refer to this sequence of processing steps as "chain" or "workflow". A failure at any point can lead to issues degrading the quality of content on the website. Most common issues originated from:
-  * Article extraction errors: Parsing issues may result in missing or incomplete article content.
-  * Summarization flaws: Summaries might omit important details or misrepresent the original intent.
-  * Article selection inaccuracies: Marketing material disguised as machine learning insights may slip through and appear on the front page.
+We refer to this sequence of processing steps as "chain" or "workflow".
 
 <p align="center">
   <img src="/src/assets/ml-times-workflow.png" alt="ML Times workflow" width="1000" />
 </p>
 
+The pipeline itself is relatively straightforward. However, the sheer volume and diversity of articles present a significant challenge: building a workflow robust enough to handle all inputs reliably.
+
 ***Ultimately, the quality of content featured on the news website hinges on the reliability of the entire workflow and each step must perform correctly.***
 
-The pipeline itself is relatively straightforward. However, the sheer volume and diversity of articles present a significant challenge: building a workflow robust enough to handle all inputs reliably.
+A failure at any point can lead to issues degrading the quality of content on the website. Most common issues originated from:
+  * Article extraction errors: Parsing issues may result in missing or incomplete article content.
+  * Summarization flaws: Summaries might omit important details or misrepresent the original intent.
+  * Article selection inaccuracies: Marketing material disguised as machine learning insights may slip through and appear on the front page.
+
 
 It is critical to optimize and **"evaluate"** the expected performance of the system in production, which is typically done through experiments in machine learning.
 We also need to record or **"trace"** the flow of requests through the pipeline so as to audit performance bottlenecks in the pipeline.  
 
 
-### Tools
+### Optimizing and monitoring the workflow
 
-**LLM evaluation and monitoring platform**
+**Article Ingestion** (programmatic step)
 
-We used LangSmith to run experiments for model evaluation (which model to use for relevance filtering? for summarization?) and for prompt engineering.
+We extract a wide set of articles from blogs, news and social media websites using `BeautifuSoup`.
+It is a purely programmatic step, no LLM is involved. This is however, the start of LLM workflow tracing as any issue at this step will cause downstream issues in the LLM calls.
+For instance, we cannot expect correct classification or summarization of an article if the article was not correctly ingested in the first place. A common example of article ingestion issues include adding non text article (such as advertising in the article text output) or not ingesting the totalily of the article.
 
-Tracing is done via making POST request to the LLM platform API, passing `run_id`, `prompt input` and `completion output`.
-We used LangSmith managed cloud service API for pipeline tracing, chain versioning, and experiments — though in hindsight, we’d consider open-source options like **LangFuse** to avoid vendor lock-in.
-All production calls can be audited on the platform and can also be imported into experiment datasets.
-
-
-**LLM Engines**
-
-We considered the following models for the LLM calls: GPT-3.5-turbo, GPT-4, llama-3 70B, llama-3 400B
-While GPT models are managed cloud services, I deployed inference endpoints for llama models on Lambda Labs cloud.
-
-
-### Pipeline overview
-
-**Article Ingestion**  
-
-We extract a wide set of sources using `BeautifuSoup`. 
-This is the first step of the LLM workflow tracing as any issue at this step will cause issue down the pipeline.  
 Not all articles are relevant to the ML community, so the next step is filtering.
 
-**Relevance Classification**
+**Relevance Filtering or classification** (llm step)
 
 An LLM is prompted to identify whether a given article is actually relevant to ML practitioners.
 
@@ -87,7 +75,14 @@ An LLM is prompted to identify whether a given article is actually relevant to M
 * **Stronger models beat weaker models at *true negative rate* but not *true positive rate***. In other words, weaker models are able to catch if an article is *about machine learning* but not so much if they are *actually insightful for a machine learning practionner*. Effectively, we had to use GPT-4 to successfully filter out marketing noise and only keep impactful industry news.
 
 
-**Summary Generation**
+**Ranking** (programmatic)
+
+There might be 30 to 50 articles meeting the relevance criteria for ML Times. However, our design consists in selecting the top 10 for each day.
+It means we need to further filter the shortlist of articles that will actually be displayed.
+The final shortlisting is done with rule based logic and using article metadata such as number of reactions (comments, upvotes) and source priority (HackerNews higher priority than Reddit).
+
+
+**Summary Generation** (llm step)
 
 For relevant articles, we prompt LLMs to produce short summaries (3 bullet points) that highlight the key insights.
 
@@ -95,6 +90,22 @@ For relevant articles, we prompt LLMs to produce short summaries (3 bullet point
 * I used a **LLM-as-evaluator workflow** that compares the summaries of two competing summarization worklows and select on the best one. This requires to trust the evaluator model decisions and a careful experiment implementation to avoid biased evaluations. 
 * **Stronger models significantly outperformed weaker model on this task** — particularly on capturing signal over fluff and writing fluid, readable summaries.
 
+
+### Tools
+
+**LLM evaluation and monitoring platform**
+
+We used LangSmith to run experiments for model evaluation (which model to use for relevance filtering? for summarization?) and for prompt engineering.
+
+Tracing is done via making POST request to the LLM platform API, passing `run_id`, `prompt input` and `completion output`.
+All production calls can be audited from a centralized location and can also be imported into experiment datasets.  
+I used LangSmith managed cloud service API for pipeline tracing, chain versioning, and experiments — though in hindsight, I'd consider open-source options like **LangFuse**.
+
+
+**LLM Engines**
+
+We considered the following models for the LLM calls: GPT-3.5-turbo, GPT-4, llama-3 70B, llama-3 400B.
+All of these models have inference endpoints available through managed cloud services today. It was not the case when we built ML Times so I had to deploy my own inference endpoints for llama models on Lambda Labs cloud using `vllm`.
 
 ### Challenges & Decisions  
 
