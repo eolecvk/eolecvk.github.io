@@ -1,0 +1,59 @@
+---
+tag:
+  - llm
+  - generative-ai
+  - chatbot
+  - crm
+title: AI native CRM for a law firm (SMB)
+description: How I built a CRM pipeline managed by AI
+intro: CRM built to be run by a AI agent
+hero_buttons:
+  - component: Link
+    label: Read article
+    href: "#more"
+    class: surface-primary
+    icon_only: false
+    icon: /src/icons/down-line.svg
+    color: surface-primary
+style:
+  template: full
+  card_template: grid
+  hero_template: image
+  hero_image_opacity: ""
+  container: md
+  block_class: my-0
+thumbnail: /src/assets/twenty-crm.jpeg
+date: 2025-07-12T10:31:47.439Z
+---
+
+## What I learned from building an AI-powered CRM
+
+A small business asked me to help them build a self-hosted CRM managed by an AI agent.
+I build an AI workflow that would update the client opportunities pipeline based on incoming emails.
+I then exposed an AI chatbot so client can query the CRM using natural language.
+
+Project code available here : https://github.com/eolecvk/trustlink-workflow
+
+### Some context
+
+My goal was to help a small legal office streamline their CRM workflow.
+Some of the requirements I gathered from them (which I think applies to a lot of SMBs):
+* **simplicity** : they are not technologists and do not want to be
+* **maintaining control of their data** : as lawyers, they deal with confidential data and want to be able to guarantee their client data does not leak
+* **Potential for automation** : The primary purpose of the CRM is not to scale the number of client but to remove repetitive tasks such as CRM related reporting and client pipeline management overhead
+
+*Importantly they want to avoid vendor lock-in with a commercial solution that could raise prices on a whim and leave them with no other option than to pay; this point was so important that they actually used an MS Excel spreadsheet as their primary CRM*.
+
+### The project
+
+#### Tech stack
+
+**CRM** : Twenty
+
+**AI Agent** : Python backend + LLM cloud API
+
+**Integration** : Microsoft Graph API
+
+
+
+
