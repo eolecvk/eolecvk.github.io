@@ -5,7 +5,7 @@ tag:
   - chatbot
   - CRM
   - Legal AI
-title: Building an AI CRM for a legal team
+title: Building an AI assistant for a legal team
 description: How I built a AI CRM pipeline for a legal team
 intro: Legal workflows administered by AI
 hero_buttons:
@@ -27,47 +27,30 @@ thumbnail: /src/assets/twenty-crm.jpeg
 date: 2025-07-12T10:31:47.439Z
 ---
 
-## What I learned building an AI powered CRM for a legal team
+## Building an AI assistant for a legal team
 
-A partner at a small law firm ([TrustLink](https://trustlinkvietnam.com.vn/)) asked me **if AI could help them handle the overhead of dealing with client relationship management (CRM)**.
+TL;DR -- ***I used AI to automate the Client Relationship Management (CRM) for a legal team.  
+The solution leverages LLMs and integrates with MS Outlook and a self-hosted CRM to automate administration and reporting of client opportunities.***
 
-They are a small team of 10 who need to keep up with 100s of client requests throughout the case lifecycle. Concretely, the legal team needs to:
-1. Write case summaries and context reports for internal coordination and client briefings.
-2. Execute a series of time-sensitive tasks (e.g., send contracts, file patent forms, issue invoices).
-3. Monitor case status and send client updates promptly.
-
-Their core requirements were **simplicity** (non-technical users needed to operate and manage the system), **data ownership** (confidential legal data must remain under their control), and to **avoid vendor lock-in** (open system, independent of any specific SaaS vendor).
-
-The law firm had an existing CRM system using a simple MS Excel table, but it was slow, disconnected, and required manual work to manage hundreds of client requests, including repetitive tasks like summarizing case contexts and sending updates. This was especially challenging given the small team and the high volume of cases.
-This represented a great opportunity for automation with LLMs!
-
-By leveraging an AI assistant, the firm automated administrative tasks, as well as delivered better and faster client service — something critical in a fast-paced legal environment.
-The AI manages repetitive tasks, reduces human error, and allows the team to focus on higher-value tasks.
-
-
-### A modular, AI-native CRM system with human-in-the-loop supervision.
-
-[The project code on GitHub](https://github.com/eolecvk/trustlink-workflow) includes scripts for integrating Microsoft Graph API, and the logic for triggering CRM updates based on incoming emails. Feel free to fork or contribute to improve the workflow.
-
-The AI-powered CRM pipeline operates as an event-driven workflow that listens to incoming client emails (via Microsoft Outlook) and updates the CRM system accordingly using structured API calls. It combines:
-* An AI assistant (LLM backend with system prompt logic)
-* Microsoft Graph API (email/calendar/document access)
-* A self-hosted CRM ([Twenty CRM](https://twenty.com/), with a simple REST interface)
+[The project code available on GitHub](https://github.com/eolecvk/trustlink-workflow) includes scripts for integrating Microsoft Graph API, and the logic for triggering CRM updates based on incoming emails.
 
 ![AI CRM Workflow](/src/assets/crm-ai-mermaid.png)
 
 
-### Upcoming features
-
-#### CRM AI chatbot
-
-The above workflow ensures that the CRM system gets updated with latest case information with incoming emails.
-The CRM becomes a structured source of context for the LLM to generate reports or answer questions.
-
-I then built a simple chatbot interface for the client to ask questions to their AI assistant about their client cases!  
-AI assitant would leverage the CRM API to find information about client cases as needed and answer questions.
+The design prioritizes **simplicity** (non-technical users needed to operate and manage the system), **data ownership** (confidential legal data must remain under their control), and to **avoid vendor lock-in** (open system, independent of any specific SaaS vendor).
 
 
-#### User access management
+**Core features:** 
+✅ Extract key client and opportunities information from emails and update the CRM accordingly  
+✅ Automatically generate notes and tasks linked to each case based on internal workflow specifications  
+✅ Write case summaries and context reports for internal coordination and client briefings.
 
-Leveraging Microsoft and Twenty CRM user access control, one major feature to implement is the ability to define user specific roles in the CRM system.
+**Upcoming features:**  
+✅ **CRM AI chatbot** -- current workflow ensures that the CRM system gets updated with latest case information with incoming emails. The CRM becomes a structured source of context for the LLM to generate reports or answer questions. AI assitant can then leverage the CRM API to find information about client cases as needed and answer questions.  
+✅ **User Access Management** -- leveraging Microsoft and Twenty CRM user access control, one major feature to implement is the ability to define user specific roles in the CRM system.
+
+
+**Tech stack:**    
+🔧 MS Graph API (for integrating with MS Outlook, Sharepoint)  
+🔧 Twenty CRM (open source, self-hosted)  
+🔧 LLM engine (eg: Gemini Pro)  
