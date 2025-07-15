@@ -5,9 +5,9 @@ tag:
   - chatbot
   - CRM
   - Legal AI
-title: Building an AI analyst for a financial broker
-description: How I built a AI chatbot to improve financial reports
-intro: An AI chatbot that answer questions about financial market based on reports  about financial reports
+title: Financial Analyst AI Chatbot
+description: Persolalized financial insights that can scale
+intro: AI chatbots are a key to scaling customer support for financial brokers
 hero_buttons:
   - component: Link
     label: Read article
@@ -29,10 +29,46 @@ date: 2025-07-12T10:31:47.439Z
 
 ## Building an AI analyst for a financial broker
 
-TL;DR -- ***I built a chatbot that can look up information in financial reports produced by a research team and is able to answer questions about market conditions and about specific companies.
-The solution leverages LLMs and custom tools to read relevant reports based on the questions. It knows financial definitions, acronyms, cite its sources and says when it does not know something!***
+TL;DR -- **AI chatbots are a viable solution for financial brokers to provide high quality, personalized market insight to their clients while minimizing operational cost.**  
+
+*Financial brokers are valuable to their clients because they are a source of market insights.  
+These insights are produced by the research team and delivered via reports and through conversation clients have with the broker sales team.  
+Offering personalized support to clients is typically expensive as it costs time to the sales team and sometimes the research team.*
+
+**I built an AI chatbots can look up information in financial reports and is able to accurately answer questions about market conditions and about specific companies.**
 
 [The project code available on GitHub](https://github.com/eolecvk/research-portal).
 
+<br />
+---
+<br />
 
-**Articles under construction**
+### Chatbot Decision Workflow
+
+![chatbot_decision_flow](/src/assets/chatbot_decision_flow.png)
+
+
+### Key insights
+
+✅ **Reads from relevant reports based on the question**  
+
+One key to building the financial research assistant chatbot is its ability to look up information in the right reports.  
+Fortunately, reports are standardized (report type, report date) making it straight forward to infer which report to read based on the focus of the question (industry, company, timeframe).
+
+✅ **Says when information is missing to answer**
+
+Conversely, if the information needed to answer is missing from the sources, we need to evaluate the ability of the chatbot to correctly report that instead of hallucinating an answer.
+
+
+✅ **Cites the sources of information**
+
+One way to reinforce trust and usefulness of the chatbot is to make information easily auditable. We find that prompting the chatbot to cite the reports containing the answers will work without issue (no RAG needed). This is in part thanks to the effectiveness of our approach to read from relevant reports in the first place.
+
+
+✅ **Understands financial terms**
+
+We connect expect all client to use a standardized list of terms which means that giving a large list of synonym and disctionary of definition to the chatbot will improve the user experience.  
+It also makes sense to build in a clarification-seeking mechanism as part of the system prompt for the chatbot to avoid assumption in case the user query is ambiguous.  
+
+<br />
+<br />
