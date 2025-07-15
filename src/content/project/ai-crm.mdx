@@ -27,30 +27,45 @@ thumbnail: /src/assets/twenty-crm.jpeg
 date: 2025-07-12T10:31:47.439Z
 ---
 
-## Building an AI assistant for a legal team
+## Building an AI Assistant for a Legal Team
 
 TL;DR -- ***I used AI to automate the Client Relationship Management (CRM) for a legal team.  
 The solution leverages LLMs and integrates with MS Outlook and a self-hosted CRM to automate administration and reporting of client opportunities.***
 
+The design prioritizes **simplicity** (non-technical users needed to operate and manage the system), **data ownership** (confidential legal data must remain under their control), and to **avoid vendor lock-in** (open system, independent of any specific SaaS vendor).
+
 [The project code available on GitHub](https://github.com/eolecvk/trustlink-workflow) includes scripts for integrating Microsoft Graph API, and the logic for triggering CRM updates based on incoming emails.
+
+
+### Features
+
+**Implemented**  
+✅ Extract key client and opportunities information from emails and update the CRM accordingly  
+✅ Automatically generate notes and tasks linked to each case based on internal workflow specifications  
+
+
+**Upcoming**  
+⏳ **Write case summaries** -- for internal coordination and client briefings.  
+⏳ **CRM AI chatbot** -- enable chatbot to leverage the CRM API to find information about client cases and answer questions.  
+⏳ **User Access Management** -- leveraging Microsoft and Twenty CRM user access control, one major feature to implement is the ability to define user specific roles in the CRM system.
+
+
+### Tech stack
+🔧 **MS Graph API** -- integrating with Outlook and Sharepoint  
+🔧 **Twenty CRM API** -- Update Opportunities, Client, Tasks, Notes in CRM  
+🔧 **LLM engine** -- LLM backend of choice swith tool use support and following OpenAI API
+
+
+### Data flow 
 
 ![AI CRM Workflow](/src/assets/crm-ai-mermaid.png)
 
 
-The design prioritizes **simplicity** (non-technical users needed to operate and manage the system), **data ownership** (confidential legal data must remain under their control), and to **avoid vendor lock-in** (open system, independent of any specific SaaS vendor).
+### Agent decision workflow 
 
+<br />
+<br />
+![chatbot_decision_flow](/src/assets/crm_agent_workflow.svg)
 
-**Core features:**  
-✅ Extract key client and opportunities information from emails and update the CRM accordingly  
-✅ Automatically generate notes and tasks linked to each case based on internal workflow specifications  
-✅ Write case summaries and context reports for internal coordination and client briefings.
-
-**Upcoming features:**  
-✅ **CRM AI chatbot** -- enable chatbot to leverage the CRM API to find information about client cases and answer questions.  
-✅ **User Access Management** -- leveraging Microsoft and Twenty CRM user access control, one major feature to implement is the ability to define user specific roles in the CRM system.
-
-
-**Tech stack:**    
-🔧 MS Graph API : integrating with Outlook and Sharepoint  
-🔧 Twenty CRM API : Update Opportunities, Client, Tasks, Notes in CRM  
-🔧 LLM engine : LLM backend of choice swith tool use support and following OpenAI API
+<br />
+<br />
