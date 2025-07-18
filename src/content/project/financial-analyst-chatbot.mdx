@@ -27,9 +27,56 @@ thumbnail: /src/assets/chatbot-logo.jpg
 date: 2025-07-12T10:31:47.439Z
 ---
 
-## Building an AI analyst for a financial broker
+## Building a financial analyst chatbot for brokers
 
-TL;DR -- **AI chatbots are a viable solution for financial brokers to provide high quality, personalized market insight to their clients while minimizing operational cost.**  
+**TL;DR** — *I built an AI chatbot to provide fast, contextual financial analysis based on in-house research, enabling brokers to scale personalized support without scaling headcount.*
+
+This bot:  
+✅ Reads company or industry-specific reports  
+✅ Finds the correct section  
+✅ Synthesizes an accurate, natural-language answer  
+✅ Cites the source used  
+
+Code and documentation available:
+[Github — AI Financial Research Assistant](https://github.com/eolecvk/research-portal)
+
+
+### Context and Motivation
+
+
+**Financial securities brokers help investors make informed decisions**  
+-- by publishing research reports via analyst teams  and providing personalized advice through sales representatives.
+
+**The problem? This system doesn’t scale well!**  
+While research teams are already busy writing reports, sales teams lack deep expertise or bandwidth to answer every client question in detail.  
+**Answering individual client questions is time-consuming and requires expertise, so scaling personalized support with only human teams is inefficient.**
+
+
+*A Q&A chatbot with access to in-house financial reports can answer technical questions from clients—accurately, instantly, and with source citations.*
+
+
+### Design Philosophy
+
+✅ Start simple: Q&A from reports
+
+The chatbot uses cues from the user's question (e.g. company name, report date, type) to select the most relevant report from a structured list of reports (e.g. "FPT_Q1Y25.pdf", "FPT_Q2Y25.pdf",...).
+
+
+✅ Doesn’t Hallucinate
+
+If the answer isn’t available in the report, the chatbot says so—making it reliable for high-stakes environments like finance.
+
+✅ Cites the Source
+
+Every answer comes with the exact report name and section, enabling clients or compliance teams to audit the result.
+
+✅ Understands Financial Language
+
+Thanks to a glossary of synonyms and definitions, plus clarification-seeking prompts, the chatbot handles varied client inputs without confusion.
+
+
+---   
+
 
 *Financial brokers are valuable to their clients because they are a source of market insights.  
 These insights are produced by the research team and delivered via reports and through conversation clients have with the broker sales team.  
