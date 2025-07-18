@@ -5,9 +5,9 @@ tag:
   - chatbot
   - CRM
   - Legal AI
-title: CRM AI Assistant for Legal Team
+title: AI Assistant for Legal Team
 description: How I built a AI CRM pipeline for a legal team
-intro: Legal workflows administered by AI
+intro: Legal CRM workflows administered by AI
 hero_buttons:
   - component: Link
     label: Read article
@@ -29,43 +29,119 @@ date: 2025-07-12T10:31:47.439Z
 
 ## Building an AI Assistant for a Legal Team
 
-TL;DR -- ***I used AI to automate the Client Relationship Management (CRM) for a legal team.  
-The solution leverages LLMs and integrates with MS Outlook and a self-hosted CRM to automate administration and reporting of client opportunities.***
+**TL;DR** — *I built an AI-powered Client Relationship Management (CRM) workflow for a small legal team, integrating Outlook, a self-hosted CRM, and LLMs to automate client opportunity tracking, task creation, and internal coordination.*
 
-The design prioritizes **simplicity** (non-technical users needed to operate and manage the system), **data ownership** (confidential legal data must remain under their control), and to **avoid vendor lock-in** (open system, independent of any specific SaaS vendor).
+The project main design principles are:
 
-[The project code available on GitHub](https://github.com/eolecvk/trustlink-workflow) includes scripts for integrating Microsoft Graph API, and the logic for triggering CRM updates based on incoming emails.
+    ✅ **Simplicity**: for adoption by non-technical users  
+    ✅ **Data ownership**: self-hosted infrastructure on client premises  
+    ✅ **Vendor independence**: open API stack with no SaaS lock-in  
+
+Code and documentation available:  
+[Github — CRM Workflow](https://github.com/eolecvk/trustlink-workflow)
+
+
+### Context and Motivation
+
+The legal office manages hundreds of ongoing client matters, including:  
+
+    ▪️ Intellectual property (IP) filings (logos, patents)  
+    ▪️ Company registrations  
+    ▪️ Tax reporting and compliance    
+
+Each request type follows a multi-step workflow, for example:
+```
+initial consultation → contract sent → ... → invoice paid
+```
+
+**Keeping track of all these pipelines manually created overhead and risk of human error. Commercial CRMs were too bulky, expensive, or unfit for the office’s custom legal workflows.**
+
+*This solution was built to evolve step by step, from Excel to CRM to agentic CRM.*
+
+
+### Design Philosophy
+
+
+    🔁 **Human-in-the-loop**: AI augments but doesn’t replace staff. Humans validate and refine updates.
+
+    🔧 **Built for AI**: From day one, the system was architected for AI integration—well-documented, API-first, and fully observable.
+
+    🧩 **Hackable CRM**: Lightweight, REST-based, with a clean UI and open source deployment.
 
 
 ### Features
 
-**Implemented**  
-✅ Extract key client and opportunities information from emails and update the CRM accordingly  
-✅ Automatically generate notes and tasks linked to each case based on internal workflow specifications  
+✅ Already Implemented
+
+    ▪️Extract client and opportunity information from incoming emails  
+    ▪️Automatically generate notes and tasks linked to each case based on internal workflow rules  
+
+🔜 In Progress
+
+    ▪️Summarize case files – for internal collaboration and client updates
+    ▪️CRM AI chatbot – conversational access to CRM records (e.g. “What’s the status of Client A's trademark?”)
+    ▪️User Role Management – integrate MS & CRM user permissions for secure multi-user collaboration
 
 
-**Upcoming**  
-⏳ **Write case summaries** -- for internal coordination and client briefings.  
-⏳ **CRM AI chatbot** -- enable chatbot to leverage the CRM API to find information about client cases and answer questions.  
-⏳ **User Access Management** -- leveraging Microsoft and Twenty CRM user access control, one major feature to implement is the ability to define user specific roles in the CRM system.
+### Architecture & Stack
 
+🧠 **LLM Engine**  
+Connects to the CRM, parses emails, makes decisions using tools like `read_email()`, `create_task()`
+(e.g. “Create note for client X about signed contract”)
 
-### Tech stack
-🔧 **MS Graph API** -- integrating with Outlook and Sharepoint  
-🔧 **Twenty CRM API** -- Update Opportunities, Client, Tasks, Notes in CRM  
-🔧 **LLM engine** -- LLM backend of choice swith tool use support and following OpenAI API
+📩 **MS Graph API**  
+Fetches emails, calendars, and SharePoint data
+
+📂 **Twenty CRM API**  
+Writes updates to CRM about clients, opportunities, and creates notes, and tasks
+
+🖥️ **Self-hosted frontend**  
+Twenty CRM self-hosted app, a lightweight CRM frontend supporting multi-user authentication
+
+![System Architecture](/src/assets/ai-crm-sys-architecture.png)
 
 
 ### Data flow 
 
+*The client updates are sourced from the business email inboxes and interpretated by the LLM into actionable updates to the CRM.*  
 ![AI CRM Workflow](/src/assets/crm-ai-mermaid.png)
 
+### AI workflow
 
-### Agent decision workflow 
+*From the agent perspective, each email triggers a new request with the following inputs and expected output / actions*
+```
+Inputs
+  - Outlook emails  
+  - CRM records  
+  - Legal process metadata  
 
-<br />
-<br />
+Outputs:
+  - New or updated CRM opportunities
+  - Auto-generated tasks and notes
+  - Audit-friendly logs of every AI action
+```
+
+The agent uses tools and APIs to respond to changes in email context: 
+    1. Parse email content
+    2. Check if client exists → update or create
+    3. Match or create opportunity
+    4. Create note or task if required
+
+
+*Visualizing the agent prompt as a workflow diagram*
 ![chatbot_decision_flow](/src/assets/crm_agent_workflow.svg)
 
+
+
+
+
+### Why This Matters
+
+**A CRM designed for AI is a solid foundation for scaling legal operations.**
+
+Rather than retrofit AI into an existing system, we built an open, modular CRM from the start—fully ready for future LLM integration.  
+The AI assistant does not replace humans, it does the repetitive work for them and enable them to focus on the key decisions.
+
+<br />
 <br />
 <br />
