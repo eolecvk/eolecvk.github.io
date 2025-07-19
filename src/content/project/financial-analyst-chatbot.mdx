@@ -29,7 +29,7 @@ date: 2025-07-12T10:31:47.439Z
 
 ## Building a financial analyst chatbot for brokers
 
-**TL;DR** — *I built an AI chatbot to provide fast, contextual financial analysis based on in-house research, enabling brokers to scale personalized support without scaling headcount.*
+**TL;DR** — *I built an AI chatbot to provide fast, contextual financial analysis based on in-house research, enabling brokers to scale personalized client support without scaling headcount.*
 
 This bot:  
 ✅ Reads company or industry-specific reports  
@@ -57,23 +57,57 @@ While research teams are already busy writing reports, sales teams lack deep exp
 
 ### Design Philosophy
 
-✅ Start simple: Q&A from reports
+✅ **Retrieves the Right Report**
 
 The chatbot uses cues from the user's question (e.g. company name, report date, type) to select the most relevant report from a structured list of reports (e.g. "FPT_Q1Y25.pdf", "FPT_Q2Y25.pdf",...).
 
-
-✅ Doesn’t Hallucinate
-
-If the answer isn’t available in the report, the chatbot says so—making it reliable for high-stakes environments like finance.
-
-✅ Cites the Source
+✅ **Cites the source**
 
 Every answer comes with the exact report name and section, enabling clients or compliance teams to audit the result.
 
-✅ Understands Financial Language
+✅ **Avoid hallucination**
+
+If the answer isn’t available in the report, the chatbot says so—making it reliable for high-stakes environments like finance.
+
+✅ Understands financial language
 
 Thanks to a glossary of synonyms and definitions, plus clarification-seeking prompts, the chatbot handles varied client inputs without confusion.
 
+
+### Agent architecture
+
+#### Agent tools
+
+The system is built around a modular function-calling architecture where the model can perform the following actions:
+```
+- get_date()
+- list_reports()
+- read_report(report_name)
+```
+
+For example:
+```
+> User asks: “What was the value of FPT in Q1?”
+> Bot logic:
+        get_date() → "17-07-2025"
+        list_reports() → "FPT_Q1Y25.json", "FPT_Q4Y24.json"
+        read_report("FPT_Q1Y25.json") → "FPT shares rose to 1000 VND this quarter"
+        Answer: "The value of FPT in Q1Y25 is 1000 VND."
+
+```
+    
+   
+This functional chain makes the bot both accurate and transparent.
+
+
+### Why it matters
+
+This approach is not just a proof-of-concept. It demonstrates that generative AI + structured financial data can:  
+▪️Reduce workload on sales and research teams,  
+▪️Improve client responsiveness and satisfaction,  
+▪️And scale operations without increasing headcount.
+
+For brokers, this is a glimpse of how AI can augment expertise and automate insight delivery.
 
 ---   
 
