@@ -31,11 +31,13 @@ date: 2025-07-12T10:31:47.439Z
 
 **TL;DR** — *I built an AI chatbot to provide fast, contextual financial analysis based on in-house research, enabling brokers to scale personalized client support without scaling headcount.*
 
-This bot:  
-✅ Reads company or industry-specific reports  
-✅ Finds the correct section  
+This bot answers user questions using a simple methodology:  
+✅ Reads the company or industry-specific reports relevant to the question  
+✅ Finds the key information needed to answer, if it exists  
 ✅ Synthesizes an accurate, natural-language answer  
-✅ Cites the source used  
+✅ Cites the sources used  
+
+*During testing, we found that using underlying model such as Gemini 2.5 Pro yielded reliable answers, and that the the bot will correctly identify when information is missing to answer.*
 
 Code and documentation available:
 [Github — AI Financial Research Assistant](https://github.com/eolecvk/research-portal)
@@ -76,7 +78,19 @@ Thanks to a glossary of synonyms and definitions, plus clarification-seeking pro
 
 ### Agent architecture
 
-#### Agent tools
+There are two main workflows in this system -- **a data ingestion workflow** and a **chatbot workflow (inference)**.
+
+The **data ingestion workflow** takes the raw report PDF files and structure them into readable data when addressing user queries.  In a production system, we would have a file management portal where an admin can upload new reports files to extend the knowledge base of the chatbot.
+
+The inference workflow takes user inputs via the chatbot interface, process them by calling a cloud hosted LLM and accessing self-hosted report data if needed, and replies to the user.
+
+Data ingestion workflow
+![data-ingestion](/src/assets/chatbot_data_ingestion.png)
+
+Chatbot workflow (inference)
+![data-ingestion](/src/assets/chatbot_inference.png)
+
+**Agent tools**
 
 The system is built around a modular function-calling architecture where the model can perform the following actions:
 ```
@@ -95,8 +109,7 @@ For example:
         Answer: "The value of FPT in Q1Y25 is 1000 VND."
 
 ```
-    
-   
+
 This functional chain makes the bot both accurate and transparent.
 
 
