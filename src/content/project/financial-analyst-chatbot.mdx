@@ -1,8 +1,10 @@
 ---
 tag:
   - LLM
+  - generative-ai
   - chatbot
-  - finance
+  - CRM
+  - Legal AI
 title: Financial Analyst AI Chatbot
 description: Persolalized financial insights that can scale
 intro: AI chatbots are a key to scaling customer support for financial brokers
@@ -69,7 +71,7 @@ Every answer comes with the exact report name and section, enabling clients or c
 
 If the answer isn’t available in the report, the chatbot says so—making it reliable for high-stakes environments like finance.
 
-✅ Understands financial language
+✅ **Understands financial language**
 
 Thanks to a glossary of synonyms and definitions, plus clarification-seeking prompts, the chatbot handles varied client inputs without confusion.
 
@@ -78,19 +80,14 @@ Thanks to a glossary of synonyms and definitions, plus clarification-seeking pro
 
 There are two main workflows in this system -- **a data ingestion workflow** and a **chatbot workflow (inference)**.
 
-The **data ingestion workflow** takes the raw report PDF files and structure them into readable data when addressing user queries.  In a production system, we would have a file management portal where an admin can upload new reports files to extend the knowledge base of the chatbot.
+The **data ingestion workflow** takes the raw report PDF files and structure them into readable data when addressing user queries.  Think of it as a file management portal where the admin can upload new reports files to extend the knowledge base of the chatbot.
 
-The inference workflow takes user inputs via the chatbot interface, process them by calling a cloud hosted LLM and accessing self-hosted report data if needed, and replies to the user.
-
-Data ingestion workflow
+*Data ingestion architecture*
 ![data-ingestion](/src/assets/chatbot_data_ingestion.png)
 
-Chatbot workflow (inference)
-![data-ingestion](/src/assets/chatbot_inference.png)
+The **inference workflow** takes user inputs via the chatbot interface, process them by calling a cloud hosted LLM and accessing self-hosted report data if needed, and replies to the user.
 
-**Agent tools**
-
-The system is built around a modular function-calling architecture where the model can perform the following actions:
+The chatbot system is built around a modular function-calling architecture where the model can perform the following actions:
 ```
 - get_date()
 - list_reports()
@@ -108,7 +105,12 @@ For example:
 
 ```
 
-This functional chain makes the bot both accurate and transparent.
+
+*Chatbot (inference) architecture*
+![data-ingestion](/src/assets/chatbot_inference.png)
+
+*Chatbot (inference) workflow*
+![chatbot_decision_flow](/src/assets/chatbot_decision_flow.png)
 
 
 ### Why it matters
@@ -120,47 +122,6 @@ This approach is not just a proof-of-concept. It demonstrates that generative AI
 
 For brokers, this is a glimpse of how AI can augment expertise and automate insight delivery.
 
----   
-
-
-*Financial brokers are valuable to their clients because they are a source of market insights.  
-These insights are produced by the research team and delivered via reports and through conversation clients have with the broker sales team.  
-Offering personalized support to clients is typically expensive as it costs time to the sales team and sometimes the research team.*
-
-**I built an AI chatbots can look up information in financial reports and is able to accurately answer questions about market conditions and about specific companies.**
-
-[The project code available on GitHub](https://github.com/eolecvk/research-portal).
-
-<br />
----
-<br />
-
-### Chatbot Decision Workflow
-
-![chatbot_decision_flow](/src/assets/chatbot_decision_flow.png)
-
-
-### Key insights
-
-✅ **Reads from relevant reports based on the question**  
-
-One key to building the financial research assistant chatbot is its ability to look up information in the right reports.  
-Fortunately, reports are standardized (report type, report date) making it straight forward to infer which report to read based on the focus of the question (industry, company, timeframe).
-
-✅ **Says when information is missing to answer**
-
-Conversely, if the information needed to answer is missing from the sources, we need to evaluate the ability of the chatbot to correctly report that instead of hallucinating an answer.
-
-
-✅ **Cites the sources of information**
-
-One way to reinforce trust and usefulness of the chatbot is to make information easily auditable. We find that prompting the chatbot to cite the reports containing the answers will work without issue (no RAG needed). This is in part thanks to the effectiveness of our approach to read from relevant reports in the first place.
-
-
-✅ **Understands financial terms**
-
-We connect expect all client to use a standardized list of terms which means that giving a large list of synonym and disctionary of definition to the chatbot will improve the user experience.  
-It also makes sense to build in a clarification-seeking mechanism as part of the system prompt for the chatbot to avoid assumption in case the user query is ambiguous.  
 
 <br />
 <br />
