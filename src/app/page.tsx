@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getProjectBySlug } from '@/lib/mdx'
+import ProjectThumb from '@/components/ProjectThumb'
 import {
   NAME,
   ROLE,
@@ -117,10 +118,9 @@ export default function HomePage() {
               />
               <div className="w-20 h-12 sm:w-24 sm:h-14 md:w-48 md:h-28 flex-shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
                 {(p.metadata.thumb || p.metadata.thumbnail) && (
-                  <img
-                    src={p.metadata.thumb || p.metadata.thumbnail}
-                    alt=""
-                    loading="lazy"
+                  <ProjectThumb
+                    poster={p.metadata.thumb || p.metadata.thumbnail}
+                    video={p.metadata.thumbVideo}
                     className="w-full h-full object-cover"
                   />
                 )}

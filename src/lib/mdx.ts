@@ -23,6 +23,7 @@ export function getAllProjects(): Project[] {
         intro: data.intro || '',
         thumbnail: data.thumbnail || '',
         thumb: data.thumb || '',
+        thumbVideo: data.thumbVideo || '',
         date: data.date || '',
         tags: data.tags || data.tag || [],
         current: data.current || false,
