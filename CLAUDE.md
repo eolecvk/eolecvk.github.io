@@ -39,3 +39,19 @@ MDX project content, deployed as static output (`images: { unoptimized: true }`)
 - `npm run build` - production build (must pass before any PR)
 - `npm run export` - static export (`STATIC_EXPORT=true`)
 
+
+## Claude Code Action (GitHub issues/PRs)
+
+
+- **Always open the PR yourself.** When a run is triggered from a GitHub
+  issue and produces file changes, finish by running `gh pr create` (title,
+  body referencing the issue, base `main`) before ending the run. Never end
+  a run by only posting a "Create a PR" compare-link in the comment - that
+  link exists as a fallback for when `gh pr create` genuinely cannot run, not
+  as the default outcome.
+- **Branch-continuation runs build on prior work, not from scratch.** If a
+  run is triggered on an existing branch/PR that already has commits (e.g.
+  addressing review feedback, or continuing a previous issue run), use
+  `git merge` or `git cherry-pick` to bring in relevant work instead of
+  re-implementing it. Both are in the workflow's `--allowedTools` allowlist.
+
