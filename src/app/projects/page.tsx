@@ -9,19 +9,19 @@ export const metadata = {
 
 function ProjectRow({ p }: { p: Project }) {
   return (
-    <li className="group relative flex items-start md:items-center gap-5 md:gap-6 py-5 md:py-6">
+    <li className="group relative flex items-start gap-5 md:gap-8 py-5 md:py-7">
       <Link
         href={`/projects/${p.slug}`}
         aria-label={p.title}
         className="absolute inset-0"
       />
-      <div className="w-20 h-12 sm:w-24 sm:h-14 md:w-48 md:h-28 flex-shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+      <div className="w-24 sm:w-32 md:w-56 lg:w-64 aspect-[12/7] flex-shrink-0 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
         {(p.thumb || p.thumbnail) && (
           <img
             src={p.thumb || p.thumbnail}
             alt=""
             loading="lazy"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-300 motion-safe:group-hover:scale-105"
           />
         )}
       </div>
@@ -92,7 +92,7 @@ export default function ProjectsPage() {
   const media = projects.filter(isMedia).sort(sortFn)
 
   return (
-    <div className="max-w-3xl mx-auto px-6 pt-6 md:pt-8 pb-12">
+    <div className="max-w-4xl mx-auto px-6 pt-6 md:pt-8 pb-12">
       <h1 className="sr-only">Projects</h1>
 
       <section>

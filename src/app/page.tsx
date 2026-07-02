@@ -22,7 +22,7 @@ export default function HomePage() {
   )
 
   return (
-    <div className="max-w-3xl mx-auto px-6 pt-10 md:pt-14 pb-16">
+    <div className="max-w-4xl mx-auto px-6 pt-10 md:pt-14 pb-16">
       {/* Hero */}
       <section>
         <div className="flex items-start gap-5">
@@ -108,20 +108,20 @@ export default function HomePage() {
           {selected.map((p) => (
             <li
               key={p.slug}
-              className="group relative flex items-start md:items-center gap-5 md:gap-6 py-5 md:py-6"
+              className="group relative flex items-start gap-5 md:gap-8 py-5 md:py-7"
             >
               <Link
                 href={`/projects/${p.slug}`}
                 aria-label={p.metadata.title}
                 className="absolute inset-0"
               />
-              <div className="w-20 h-12 sm:w-24 sm:h-14 md:w-48 md:h-28 flex-shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+              <div className="w-24 sm:w-32 md:w-56 lg:w-64 aspect-[12/7] flex-shrink-0 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
                 {(p.metadata.thumb || p.metadata.thumbnail) && (
                   <img
                     src={p.metadata.thumb || p.metadata.thumbnail}
                     alt=""
                     loading="lazy"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-300 motion-safe:group-hover:scale-105"
                   />
                 )}
               </div>

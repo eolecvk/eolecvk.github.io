@@ -13,7 +13,7 @@ export default function Header() {
   const pathname = usePathname() ?? '/'
 
   return (
-    <header className="max-w-3xl mx-auto px-6 pt-8 md:pt-10 pb-6 border-b border-gray-200 dark:border-gray-800">
+    <header className="max-w-4xl mx-auto px-6 pt-8 md:pt-10 pb-6 border-b border-gray-200 dark:border-gray-800">
       <nav className="flex items-baseline justify-between text-sm" aria-label="Primary">
         <Link
           href="/"
