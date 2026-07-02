@@ -1,8 +1,6 @@
-import NowLine from '@/components/NowLine'
 import {
   NAME,
   ROLE,
-  POSITIONING,
   LINKS,
 } from '@/lib/profile'
 
@@ -17,7 +15,7 @@ const PERSON_LD = {
   name: NAME,
   jobTitle: ROLE,
   url: 'https://eolecvk.com',
-  description: POSITIONING,
+  description: 'Machine Learning Engineer — multi-agent LLM systems, production AI, and Stable Diffusion.',
   sameAs: [LINKS.github, LINKS.linkedin],
   knowsAbout: [
     'Machine Learning',
@@ -28,7 +26,6 @@ const PERSON_LD = {
     'Stable Diffusion',
     'LLM observability',
   ],
-  worksFor: { '@type': 'Organization', name: 'Constellation Finance' },
   alumniOf: [
     { '@type': 'EducationalOrganization', name: 'Université Paris Dauphine - PSL' },
     { '@type': 'EducationalOrganization', name: 'Bentley University' },
@@ -54,9 +51,9 @@ const EXPERIENCE: Role[] = [
   {
     title: 'AI/ML Engineer',
     company: 'Constellation Finance',
-    dates: 'Mar 2026 – Present',
+    dates: 'Mar 2026 – Jun 2026',
     stage: 'Seed: $3.5M',
-    current: true,
+    current: false,
     highlights: ['Multi-agent LLM systems'],
     bullets: [
       'Lead developer on the MCP (Model Context Protocol) product — AI agent access to financial data',
@@ -204,9 +201,6 @@ export default function AboutPage() {
         <h1 className="sr-only">About</h1>
         <SectionHeading>Achievements</SectionHeading>
         <ul className="list-disc list-outside ml-5 space-y-2 marker:text-gray-400 dark:marker:text-gray-600 max-w-[60ch]">
-          <li className="text-base leading-relaxed text-gray-700 dark:text-gray-300 pl-1">
-            <NowLine />
-          </li>
           <li className="text-base leading-relaxed text-gray-700 dark:text-gray-300 pl-1">
             Built a Stable Diffusion inference benchmark cited by Google Research.
           </li>

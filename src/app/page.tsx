@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { getProjectBySlug } from '@/lib/mdx'
-import NowLine from '@/components/NowLine'
 import {
   NAME,
   ROLE,
@@ -41,10 +40,7 @@ export default function HomePage() {
             <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-500 font-mono">
               {ROLE}
             </p>
-            <p className="mt-4 text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
-              <NowLine />
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-2">
               {PILLS.slice(0, 2).map((pill) => (
                 <span
                   key={pill}

@@ -7,14 +7,6 @@ export const NAME = 'Eole Cervenka'
 export const ROLE = 'Machine Learning Engineer'
 export const SECONDARY_ROLE = 'Collaboration enthusiast'
 
-export const POSITIONING = 'Currently building AI agents for credit analysis'
-
-export const POSITIONING_COMPANY = 'Constellation Finance'
-export const POSITIONING_COMPANY_URL = 'https://app.constellationfinance.ai/'
-
-export const NOW_LINE =
-  'Currently leading the MCP product at Constellation Finance — Seed, $3.5M.'
-
 export const PILLS = [
   'Cited by Google Research',
   '7y production ML',
