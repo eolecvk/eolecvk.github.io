@@ -11,6 +11,8 @@ module.exports = {
     extend: {
       colors: {
         'dark': '#171219',
+        'accent': '#2743E3',
+        'accent-dark': '#8B9BFF',
       },
       fontFamily: {
         'sans': ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],

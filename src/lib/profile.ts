@@ -1,6 +1,8 @@
 // Shared profile data — single source of truth for the homepage hero,
 // the resume hero, and the collaborate page.
 
+export const DOMAIN = 'eolecvk.com'
+
 export const NAME = 'Eole Cervenka'
 export const ROLE = 'Machine Learning Engineer'
 export const SECONDARY_ROLE = 'Collaboration enthusiast'

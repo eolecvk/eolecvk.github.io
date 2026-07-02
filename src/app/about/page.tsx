@@ -193,7 +193,7 @@ function RoleCard({ role }: { role: Role }) {
 
 export default function AboutPage() {
   return (
-    <div className="max-w-2xl mx-auto px-6 pt-6 md:pt-8 pb-12">
+    <div className="max-w-3xl mx-auto px-6 pt-6 md:pt-8 pb-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_LD) }}
