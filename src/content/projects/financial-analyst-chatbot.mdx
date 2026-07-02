@@ -62,12 +62,48 @@ Thanks to a glossary of synonyms and definitions, plus clarification-seeking pro
 
 There are two main workflows in this system -- **a data ingestion workflow** and a **chatbot workflow (inference)**.
 
-The **data ingestion workflow** takes the raw report PDF files and structure them into readable data when addressing user queries.  Think of it as a file management portal where the admin can upload new reports files to extend the knowledge base of the chatbot.
+The **data ingestion workflow** takes the raw report PDF files and structures them into readable data for answering user queries. Think of it as a file management portal where the admin can upload new report files to extend the knowledge base of the chatbot. The **inference workflow** takes user input via the chatbot interface, calls a cloud-hosted LLM, and pulls in self-hosted report data as needed to reply to the user.
 
-*Data ingestion system design*
-![data-ingestion](/images/projects/chatbot_data_ingestion.webp)
+<div class="not-prose my-10 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/40 p-5 sm:p-6">
+  <div class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600 mb-4">Data ingestion</div>
+  <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div class="flex-1 min-w-[130px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100">PDF reports</div>
+      <div class="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Broker research</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[130px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Parse &amp; structure</div>
+      <div class="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Per report, per section</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[130px] rounded-md border border-gray-900 dark:border-gray-100 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">Knowledge base</div>
+      <div class="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Structured &amp; queryable</div>
+    </div>
+  </div>
 
-The **inference workflow** takes user inputs via the chatbot interface, process them by calling a cloud hosted LLM and accessing self-hosted report data if needed, and replies to the user.
+  <div class="flex justify-center my-3 text-gray-300 dark:text-gray-700 text-lg leading-none" aria-hidden="true">↓</div>
+
+  <div class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600 mb-4">Inference</div>
+  <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100">User query</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Retrieve context</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100">LLM synthesis</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-900 dark:border-gray-100 bg-gray-900 dark:bg-gray-100 px-3 py-2.5 text-center">
+      <div class="text-sm font-semibold text-white dark:text-gray-900">Cited answer</div>
+    </div>
+  </div>
+</div>
 
 The chatbot system is built around a modular function-calling architecture where the model can perform the following actions:
 ```
@@ -76,23 +112,40 @@ The chatbot system is built around a modular function-calling architecture where
 - read_report(report_name)
 ```
 
-For example:
-```
-> User asks: “What was the value of FPT in Q1?”
-> Bot logic:
-        get_date() → "17-07-2025"
-        list_reports() → "FPT_Q1Y25.json", "FPT_Q4Y24.json"
-        read_report("FPT_Q1Y25.json") → "FPT shares rose to 1000 VND this quarter"
-        Answer: "The value of FPT in Q1Y25 is 1000 VND."
+Here's a real exchange, end to end:
 
-```
-
-
-*Chatbot (inference) system design*
-![data-ingestion](/images/projects/chatbot_inference.webp)
-
-*Chatbot (inference) workflow*
-![chatbot_decision_flow](/images/projects/chatbot_decision_flow.webp)
+<div class="not-prose my-10 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+  <div class="px-4 sm:px-5 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/40">
+    <span class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">Worked example</span>
+  </div>
+  <div class="px-4 sm:px-5 py-4">
+    <div class="text-sm text-gray-900 dark:text-gray-100"><span class="font-mono text-xs text-gray-400 dark:text-gray-600 mr-2">Q</span>"What was the value of FPT in Q1?"</div>
+  </div>
+  <div class="px-4 sm:px-5 pb-4 space-y-2 font-mono text-xs">
+    <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+      <span class="text-gray-300 dark:text-gray-700 select-none">1</span>
+      <span class="text-gray-500 dark:text-gray-500">get_date()</span>
+      <span class="text-gray-300 dark:text-gray-700">→</span>
+      <span class="text-gray-700 dark:text-gray-300">"17-07-2025"</span>
+    </div>
+    <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+      <span class="text-gray-300 dark:text-gray-700 select-none">2</span>
+      <span class="text-gray-500 dark:text-gray-500">list_reports()</span>
+      <span class="text-gray-300 dark:text-gray-700">→</span>
+      <span class="text-gray-700 dark:text-gray-300">"FPT_Q1Y25.json", "FPT_Q4Y24.json"</span>
+    </div>
+    <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+      <span class="text-gray-300 dark:text-gray-700 select-none">3</span>
+      <span class="text-gray-500 dark:text-gray-500">read_report("FPT_Q1Y25.json")</span>
+      <span class="text-gray-300 dark:text-gray-700">→</span>
+      <span class="text-gray-700 dark:text-gray-300">"FPT shares rose to 1000 VND this quarter"</span>
+    </div>
+  </div>
+  <div class="px-4 sm:px-5 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-900 dark:bg-gray-100">
+    <div class="text-sm text-white dark:text-gray-900"><span class="font-mono text-xs text-gray-400 dark:text-gray-600 mr-2">A</span>"The value of FPT in Q1Y25 is 1000 VND."</div>
+    <div class="mt-1.5 text-[11px] font-mono text-gray-400 dark:text-gray-600">Source: FPT_Q1Y25.json</div>
+  </div>
+</div>
 
 
 ### Why it matters

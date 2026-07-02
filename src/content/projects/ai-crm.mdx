@@ -82,14 +82,53 @@ Writes updates to CRM about clients, opportunities, and creates notes, and tasks
 Twenty CRM self-hosted app, a lightweight CRM frontend supporting multi-user authentication
 
 
-*AI CRM system architecture*
-![System Architecture](/images/projects/ai-crm-sys-architecture.webp)
+<div class="not-prose my-10 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/40 p-5 sm:p-6">
+  <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div class="flex-1 min-w-[140px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-3">
+      <div class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">Source</div>
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mt-1">MS Graph API</div>
+      <div class="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Emails · calendar · SharePoint</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[140px] rounded-md border border-gray-900 dark:border-gray-100 bg-white dark:bg-dark px-3 py-3">
+      <div class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">Engine</div>
+      <div class="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-1">LLM agent</div>
+      <div class="text-xs text-gray-500 dark:text-gray-500 mt-0.5">read_email() · create_task()</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[140px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-3">
+      <div class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">Target</div>
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mt-1">Twenty CRM</div>
+      <div class="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Clients · opportunities · notes</div>
+    </div>
+  </div>
+  <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-500">
+    Self-hosted frontend surfaces every update to the team — multi-user auth, no SaaS lock-in.
+  </div>
+</div>
 
 
 ### Data flow 
 
-*The client updates are sourced from the business email inboxes and interpreted by the LLM into actionable updates to the CRM.*  
-![AI CRM Workflow](/images/projects/crm-ai-mermaid.webp)
+*The client updates are sourced from the business email inboxes and interpreted by the LLM into actionable updates to the CRM.*
+
+<div class="not-prose my-10 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+  <div class="px-4 sm:px-5 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/40">
+    <span class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">Worked example</span>
+  </div>
+  <div class="px-4 sm:px-5 py-4">
+    <div class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600 mb-1.5">Inbound email</div>
+    <div class="text-sm text-gray-700 dark:text-gray-300 italic">"Hi — following up on the trademark filing for Acme Corp. Please proceed with the application when ready."</div>
+  </div>
+  <div class="px-4 sm:px-5 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-900 dark:bg-gray-100">
+    <div class="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600 mb-2">CRM update</div>
+    <div class="space-y-1.5 text-sm text-white dark:text-gray-900">
+      <div><span class="text-gray-400 dark:text-gray-600 font-mono text-xs mr-2">client</span>Acme Corp <span class="text-gray-400 dark:text-gray-600">(matched)</span></div>
+      <div><span class="text-gray-400 dark:text-gray-600 font-mono text-xs mr-2">opportunity</span>Trademark Filing — Acme Corp <span class="text-gray-400 dark:text-gray-600">→ in progress</span></div>
+      <div><span class="text-gray-400 dark:text-gray-600 font-mono text-xs mr-2">task</span>File trademark application <span class="text-gray-400 dark:text-gray-600">(due in 5 days)</span></div>
+    </div>
+  </div>
+</div>
 
 ### AI workflow
 
@@ -113,8 +152,29 @@ The agent uses tools and APIs to respond to changes in email context:
     4. Create note or task if required
 
 
-*Visualizing the agent prompt as a workflow diagram*
-![chatbot_decision_flow](/images/projects/crm_agent_workflow.webp)
+<div class="not-prose my-10 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/40 p-5 sm:p-6">
+  <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-[11px] font-mono text-gray-400 dark:text-gray-600">1</div>
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mt-0.5">Parse email</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-[11px] font-mono text-gray-400 dark:text-gray-600">2</div>
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mt-0.5">Match or create client</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark px-3 py-2.5 text-center">
+      <div class="text-[11px] font-mono text-gray-400 dark:text-gray-600">3</div>
+      <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mt-0.5">Match or create opportunity</div>
+    </div>
+    <div class="text-gray-300 dark:text-gray-700 text-lg" aria-hidden="true">→</div>
+    <div class="flex-1 min-w-[110px] rounded-md border border-gray-900 dark:border-gray-100 bg-gray-900 dark:bg-gray-100 px-3 py-2.5 text-center">
+      <div class="text-[11px] font-mono text-gray-400 dark:text-gray-600">4</div>
+      <div class="text-sm font-semibold text-white dark:text-gray-900 mt-0.5">Create note / task</div>
+    </div>
+  </div>
+</div>
 
 
 
