@@ -156,16 +156,9 @@ function RoleCard({ role }: { role: Role }) {
         </span>
       </div>
       {role.highlights && role.highlights.length > 0 && (
-        <div className="flex flex-wrap items-center gap-1.5 mb-2">
-          {role.highlights.map((h) => (
-            <span
-              key={h}
-              className="text-[11px] font-medium px-2 py-0.5 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-full whitespace-nowrap"
-            >
-              {h}
-            </span>
-          ))}
-        </div>
+        <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500 dark:text-gray-400">
+          {role.highlights.join('  ·  ')}
+        </p>
       )}
       {role.bullets && (
         <ul className="list-disc list-outside ml-5 mt-2 space-y-1.5 marker:text-gray-400 dark:marker:text-gray-600">

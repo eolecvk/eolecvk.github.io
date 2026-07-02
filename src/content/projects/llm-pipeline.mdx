@@ -18,13 +18,11 @@ featured: true
 
 **Stack:** Python, LangChain, LangSmith, BeautifulSoup, Claude/GPT-4
 
-![ML Times homepage](/images/projects/ml-times.webp)
-
 Everyday, ML Times backend scans hundreds of sources, selects the most relevant stories, and produces concise summaries.
 Note that some of these steps involve programmatic steps (e.g., extracting article text from a web page), while others involve LLM calls (e.g., summarizing an article).
 We refer to this sequence of processing steps as "chain" or "workflow".
 
-![ML Times workflow](/images/projects/ml-times-workflow.webp)
+![ML Times daily pipeline — ingest, filter, rank, summarize](/images/projects/llm-pipeline-workflow.webp)
 
 The pipeline is straightforward in concept, but the volume and diversity of sources make reliability the real challenge. Failures compound — a bad extraction leads to a bad summary leads to a bad article on the front page. The most common failure modes:
   * **Extraction errors:** Incomplete parsing, ad copy captured as article text

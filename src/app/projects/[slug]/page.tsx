@@ -153,16 +153,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
         {/* Tags — moved out of meta strip to article foot */}
         {tags.length > 0 && (
-          <ul className="mt-14 flex flex-wrap gap-1.5">
-            {tags.map((t) => (
-              <li
-                key={t}
-                className="text-[11px] font-medium px-2 py-0.5 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-full whitespace-nowrap"
-              >
-                {t}
-              </li>
-            ))}
-          </ul>
+          <p className="mt-14 font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500 dark:text-gray-400">
+            {tags.join('  ·  ')}
+          </p>
         )}
       </article>
 

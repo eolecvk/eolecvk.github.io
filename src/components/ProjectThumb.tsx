@@ -47,6 +47,7 @@ export default function ProjectThumb({ poster, video, alt = '', className }: Pro
     return (
       <video
         className={className}
+        aria-hidden
         autoPlay
         loop
         muted
