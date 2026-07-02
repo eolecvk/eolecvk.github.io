@@ -153,7 +153,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
         {/* Tags — moved out of meta strip to article foot */}
         {tags.length > 0 && (
-          <ul className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 flex flex-wrap gap-1.5">
+          <ul className="mt-14 flex flex-wrap gap-1.5">
             {tags.map((t) => (
               <li
                 key={t}
@@ -168,7 +168,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
       {/* Prev / Next navigation — quiet inline foot */}
       {(prev || next) && (
-        <nav className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 text-sm">
+        <nav className="mt-14 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 text-sm">
           <div className="flex-1 min-w-0">
             {prev && (
               <Link

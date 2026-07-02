@@ -260,7 +260,7 @@ export default function AboutPage() {
       </section>
 
       {/* PDF download */}
-      <div className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 flex items-center justify-center gap-3 text-[11px] font-mono">
+      <div className="mt-16 flex items-center justify-center gap-3 text-[11px] font-mono">
         <a
           href="/resume-ats.pdf"
           download
