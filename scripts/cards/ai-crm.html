@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ai-crm card</title>
+<style>
+  :root {
+    --bg: #14151a;
+    --card: #1c1e25;
+    --card-2: #22242c;
+    --border: #2d3039;
+    --text: #e7e9ee;
+    --muted: #9aa1ad;
+    --dim: #6b7280;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    background: var(--bg);
+    font-family: var(--sans);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .canvas {
+    width: 1040px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .label {
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .label::before {
+    content: "";
+    width: 10px; height: 10px;
+    background: var(--text);
+  }
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .stage {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+  }
+  .stage .head {
+    font-family: var(--mono);
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .email .body-text {
+    font-size: 23px;
+    line-height: 1.5;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .email .body-text strong { color: var(--text); font-style: normal; }
+  .agent {
+    flex: 0 0 280px;
+    background: var(--card-2);
+    justify-content: center;
+  }
+  .agent .name {
+    font-size: 28px;
+    font-weight: 650;
+    color: var(--text);
+  }
+  .agent .tools {
+    font-family: var(--mono);
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+  .crm .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .crm .row:last-child { border-bottom: none; }
+  .crm .k {
+    font-family: var(--mono);
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    flex-shrink: 0;
+  }
+  .crm .v {
+    font-size: 21px;
+    font-weight: 550;
+    color: var(--text);
+    text-align: right;
+  }
+  .crm .v .note { color: var(--muted); font-weight: 400; }
+  .link {
+    display: flex;
+    align-items: center;
+    flex: 0 0 44px;
+  }
+  .link svg { width: 100%; }
+  .link line { stroke: var(--dim); stroke-width: 2.5; }
+  .link path { fill: var(--dim); }
+
+  /* Entrance animation, enabled only when body.animate is set */
+  body.animate .email   { animation: rise 0.6s ease-out 0.5s both; }
+  body.animate .l1      { animation: fade 0.5s ease-out 1.6s both; }
+  body.animate .agent   { animation: rise 0.6s ease-out 2.0s both; }
+  body.animate .l2      { animation: fade 0.5s ease-out 3.1s both; }
+  body.animate .crm     { animation: rise 0.6s ease-out 3.5s both; }
+  body.animate .r1      { animation: fade 0.5s ease-out 4.6s both; }
+  body.animate .r2      { animation: fade 0.5s ease-out 5.6s both; }
+  body.animate .r3      { animation: fade 0.5s ease-out 6.6s both; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="label">AI CRM for legal &middot; inbound email &rarr; case update</div>
+    <div class="flow">
+      <div class="stage email">
+        <div class="head">Inbound email</div>
+        <div class="body-text">&ldquo;Hi &mdash; following up on the <strong>trademark filing for Acme Corp</strong>. Please proceed with the application when ready.&rdquo;</div>
+      </div>
+      <div class="link l1">
+        <svg viewBox="0 0 44 20"><line x1="0" y1="10" x2="34" y2="10"/><path d="M34 4 L44 10 L34 16 Z"/></svg>
+      </div>
+      <div class="stage agent">
+        <div class="head">LLM agent</div>
+        <div class="name">Parse &amp; act</div>
+        <div class="tools">read_email()<br>match_client()<br>create_task()</div>
+      </div>
+      <div class="link l2">
+        <svg viewBox="0 0 44 20"><line x1="0" y1="10" x2="34" y2="10"/><path d="M34 4 L44 10 L34 16 Z"/></svg>
+      </div>
+      <div class="stage crm">
+        <div class="head">CRM update</div>
+        <div class="row r1"><span class="k">client</span><span class="v">Acme Corp <span class="note">&middot; matched</span></span></div>
+        <div class="row r2"><span class="k">case</span><span class="v">Trademark filing <span class="note">&middot; in progress</span></span></div>
+        <div class="row r3"><span class="k">task</span><span class="v">File application <span class="note">&middot; due in 5 days</span></span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    if (location.hash === '#animate') document.body.classList.add('animate');
+  </script>
+</body>
+</html>

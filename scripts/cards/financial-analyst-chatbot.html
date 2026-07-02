@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>financial-analyst-chatbot card</title>
+<style>
+  :root {
+    --bg: #14151a;
+    --card: #1c1e25;
+    --card-2: #22242c;
+    --border: #2d3039;
+    --text: #e7e9ee;
+    --muted: #9aa1ad;
+    --dim: #6b7280;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    background: var(--bg);
+    font-family: var(--sans);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .canvas {
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .label {
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .label::before {
+    content: "";
+    width: 10px; height: 10px;
+    background: var(--text);
+  }
+  .query {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+  }
+  .query .prompt {
+    font-family: var(--mono);
+    font-size: 34px;
+    color: var(--dim);
+  }
+  .query .q {
+    font-size: 42px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .trace {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 26px 32px;
+    font-family: var(--mono);
+    font-size: 22px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+  .trace .fn { color: var(--text); }
+  .trace .arrow { color: var(--dim); }
+  .answer {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--text);
+    border-radius: 10px;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .answer .a {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .answer .cite {
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Entrance animation, enabled only when body.animate is set */
+  body.animate .query   { animation: rise 0.6s ease-out 0.6s both; }
+  body.animate .t1      { animation: rise 0.5s ease-out 2.0s both; }
+  body.animate .t2      { animation: rise 0.5s ease-out 3.2s both; }
+  body.animate .t3      { animation: rise 0.5s ease-out 4.4s both; }
+  body.animate .trace   { animation: fade 0.5s ease-out 1.7s both; }
+  body.animate .answer  { animation: rise 0.7s ease-out 6.2s both; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="label">Financial analyst chatbot &middot; worked example</div>
+    <div class="query">
+      <span class="prompt">&#10095;</span>
+      <span class="q">&ldquo;What was the value of FPT in Q1?&rdquo;</span>
+    </div>
+    <div class="trace">
+      <div class="t1"><span class="fn">get_date()</span> <span class="arrow">&rarr;</span> "17-07-2025"</div>
+      <div class="t2"><span class="fn">list_reports()</span> <span class="arrow">&rarr;</span> "FPT_Q1Y25.json", "FPT_Q4Y24.json"</div>
+      <div class="t3"><span class="fn">read_report("FPT_Q1Y25.json")</span> <span class="arrow">&rarr;</span> "FPT shares rose to 1000 VND&hellip;"</div>
+    </div>
+    <div class="answer">
+      <div class="a">The value of FPT in Q1Y25 is 1000 VND.</div>
+      <div class="cite">Source: FPT_Q1Y25.json</div>
+    </div>
+  </div>
+  <script>
+    if (location.hash === '#animate') document.body.classList.add('animate');
+  </script>
+</body>
+</html>

@@ -16,9 +16,9 @@ TARGET_W, TARGET_H = 576, 336
 
 # slug -> source path relative to public/
 SOURCES = {
-    "ai-crm": "images/projects/ai-crm-sys-architecture.webp",
+    "ai-crm": "images/projects/ai-crm-hero.webp",
     "creativerush-media-lab": "images/lab/homepage/animation_scene_control.gif",
-    "financial-analyst-chatbot": "images/projects/chatbot_inference.webp",
+    "financial-analyst-chatbot": "images/projects/financial-analyst-chatbot-hero.webp",
     "llm-pipeline": "images/projects/ml-times.webp",
     "stable-diffusion-benchmark": "images/projects/sd-bench-1.webp",
     "stable-diffusion-finetuning": "images/projects/naruto-sd.webp",
