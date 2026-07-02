@@ -117,4 +117,8 @@ body.lab-dark footer svg {
   .animate-scroll-dynamic {
     animation: none;
   }
+
+  #main {
+    animation: none;
+  }
 }

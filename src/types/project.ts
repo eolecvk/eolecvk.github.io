@@ -5,6 +5,7 @@ export interface Project {
   description: string
   intro: string
   thumbnail: string
+  thumb?: string
   date: string
   tags: string[]
   current?: boolean
@@ -20,6 +21,7 @@ export interface ProjectMetadata {
   description: string
   intro: string
   thumbnail: string
+  thumb?: string
   date: string
   tags?: string[]
   current?: boolean

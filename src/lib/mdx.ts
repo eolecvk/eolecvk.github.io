@@ -22,6 +22,7 @@ export function getAllProjects(): Project[] {
         description: data.description || '',
         intro: data.intro || '',
         thumbnail: data.thumbnail || '',
+        thumb: data.thumb || '',
         date: data.date || '',
         tags: data.tags || data.tag || [],
         current: data.current || false,
