@@ -107,7 +107,7 @@ export default function HomePage() {
               <Link
                 href={`/projects/${p.slug}`}
                 aria-label={p.metadata.title}
-                className="absolute inset-0"
+                className="absolute inset-0 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent-dark"
               />
               <div className="w-24 sm:w-32 md:w-56 lg:w-64 aspect-[12/7] flex-shrink-0 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
                 {(p.metadata.thumb || p.metadata.thumbnail) && (

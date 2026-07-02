@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>llm-pipeline workflow card</title>
+<style>
+  :root {
+    --bg: #14151a;
+    --card: #1c1e25;
+    --card-2: #22242c;
+    --border: #2d3039;
+    --text: #e7e9ee;
+    --muted: #9aa1ad;
+    --dim: #6b7280;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    background: var(--bg);
+    font-family: var(--sans);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .canvas {
+    width: 1080px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .label {
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .label::before {
+    content: "";
+    width: 10px; height: 10px;
+    background: var(--text);
+  }
+  .endpoints {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 16px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .stage {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  .stage .kind {
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .stage .kind.llm { color: var(--muted); }
+  .stage .name {
+    font-size: 26px;
+    font-weight: 650;
+    color: var(--text);
+  }
+  .stage .note {
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .stage.llm { background: var(--card-2); }
+  .link {
+    display: flex;
+    align-items: center;
+    flex: 0 0 34px;
+  }
+  .link svg { width: 100%; }
+  .link line { stroke: var(--dim); stroke-width: 2.5; }
+  .link path { fill: var(--dim); }
+  .legend {
+    display: flex;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .legend .k { display: flex; align-items: center; gap: 10px; }
+  .legend .swatch {
+    width: 14px; height: 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .legend .swatch.prog { background: var(--card); }
+  .legend .swatch.llm { background: var(--card-2); }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="label">ML Times &middot; daily pipeline</div>
+    <div class="endpoints">
+      <span>In: hundreds of articles / day</span>
+      <span>Out: top 10 on the front page</span>
+    </div>
+    <div class="flow">
+      <div class="stage">
+        <div class="kind">Programmatic</div>
+        <div class="name">Ingest</div>
+        <div class="note">Extract article text from source pages</div>
+      </div>
+      <div class="link"><svg viewBox="0 0 34 20"><line x1="0" y1="10" x2="24" y2="10"/><path d="M24 4 L34 10 L24 16 Z"/></svg></div>
+      <div class="stage llm">
+        <div class="kind llm">LLM</div>
+        <div class="name">Filter</div>
+        <div class="note">Grade relevance to ML practitioners, 1&ndash;5</div>
+      </div>
+      <div class="link"><svg viewBox="0 0 34 20"><line x1="0" y1="10" x2="24" y2="10"/><path d="M24 4 L34 10 L24 16 Z"/></svg></div>
+      <div class="stage">
+        <div class="kind">Programmatic</div>
+        <div class="name">Rank</div>
+        <div class="note">Reactions, upvotes, source priority</div>
+      </div>
+      <div class="link"><svg viewBox="0 0 34 20"><line x1="0" y1="10" x2="24" y2="10"/><path d="M24 4 L34 10 L24 16 Z"/></svg></div>
+      <div class="stage llm">
+        <div class="kind llm">LLM</div>
+        <div class="name">Summarize</div>
+        <div class="note">Three bullets per selected article</div>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="k"><span class="swatch prog"></span>Programmatic step</span>
+      <span class="k"><span class="swatch llm"></span>LLM step</span>
+    </div>
+  </div>
+</body>
+</html>

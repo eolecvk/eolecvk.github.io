@@ -14,7 +14,7 @@ function ProjectRow({ p }: { p: Project }) {
       <Link
         href={`/projects/${p.slug}`}
         aria-label={p.title}
-        className="absolute inset-0"
+        className="absolute inset-0 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent-dark"
       />
       <div className="w-24 sm:w-32 md:w-56 lg:w-64 aspect-[12/7] flex-shrink-0 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
         {(p.thumb || p.thumbnail) && (
@@ -62,7 +62,7 @@ function ProjectRow({ p }: { p: Project }) {
               </span>
             )}
             {p.current && (
-              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-700 dark:text-gray-300 border border-gray-400 dark:border-gray-600 px-1.5 py-0.5 rounded-sm whitespace-nowrap">
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-700 dark:text-gray-300 whitespace-nowrap">
                 WIP
               </span>
             )}
