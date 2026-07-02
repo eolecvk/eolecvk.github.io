@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getProjectBySlug } from '@/lib/mdx'
+import NowLine from '@/components/NowLine'
 import {
   NAME,
   ROLE,
@@ -7,6 +8,7 @@ import {
   CAL_URL,
   CAL_ENABLED,
   LINKEDIN_URL,
+  PILLS,
 } from '@/lib/profile'
 
 const SELECTED_SLUGS = [
@@ -21,7 +23,7 @@ export default function HomePage() {
   )
 
   return (
-    <div className="max-w-2xl mx-auto px-6 pt-10 md:pt-14 pb-16">
+    <div className="max-w-3xl mx-auto px-6 pt-10 md:pt-14 pb-16">
       {/* Hero */}
       <section>
         <div className="flex items-start gap-5">
@@ -30,7 +32,7 @@ export default function HomePage() {
             alt={`${NAME} portrait`}
             width={56}
             height={56}
-            className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover flex-shrink-0 border border-gray-200 dark:border-gray-800"
+            className="w-14 h-14 md:w-20 md:h-20 rounded-full object-cover flex-shrink-0 border border-gray-200 dark:border-gray-800"
           />
           <div className="min-w-0 flex-1">
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
@@ -39,31 +41,25 @@ export default function HomePage() {
             <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-500 font-mono">
               {ROLE}
             </p>
-            <div className="mt-5 grid grid-cols-2 gap-3 max-w-md">
-              <a
-                href={LINKS.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-900 hover:border-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:border-gray-100 dark:hover:text-gray-900 transition-colors"
-                aria-label="Message on LinkedIn"
-              >
-                <svg
-                  aria-hidden
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
+            <p className="mt-4 text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
+              <NowLine />
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {PILLS.slice(0, 2).map((pill) => (
+                <span
+                  key={pill}
+                  className="rounded-full font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 px-2.5 py-1"
                 >
-                  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zM4.943 12.248V6.169H2.542v6.079zm-1.2-6.911a1.252 1.252 0 1 0 0-2.501 1.252 1.252 0 0 0 0 2.501m4.908 6.911V8.91q0-.262.045-.453a1.94 1.94 0 0 1 .55-.794c.21-.149.38-.226.564-.226.501 0 .753.252.753.756v3.953h2.4V8.736c0-1.078-.32-1.928-.96-2.55-.638-.622-1.486-.933-2.543-.933-.654 0-1.198.143-1.633.43-.435.286-.74.66-.916 1.12V5.886H6.516a32 32 0 0 1 .025 1.41v4.952z"/>
-                </svg>
-                <span>Message</span>
-              </a>
+                  {pill}
+                </span>
+              ))}
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-3 max-w-md">
               <a
                 href={CAL_ENABLED ? CAL_URL : LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-900 hover:border-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:border-gray-100 dark:hover:text-gray-900 transition-colors"
+                className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 border rounded text-sm font-medium bg-gray-900 text-white border-gray-900 hover:bg-accent hover:border-accent dark:bg-gray-100 dark:text-gray-900 dark:border-gray-100 dark:hover:bg-accent-dark dark:hover:border-accent-dark transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent-dark"
                 aria-label="Book a call on Cal.com"
               >
                 <svg
@@ -85,6 +81,25 @@ export default function HomePage() {
                 </svg>
                 <span>Book a call</span>
               </a>
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-900 hover:border-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:border-gray-100 dark:hover:text-gray-900 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent-dark"
+                aria-label="Message on LinkedIn"
+              >
+                <svg
+                  aria-hidden
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zM4.943 12.248V6.169H2.542v6.079zm-1.2-6.911a1.252 1.252 0 1 0 0-2.501 1.252 1.252 0 0 0 0 2.501m4.908 6.911V8.91q0-.262.045-.453a1.94 1.94 0 0 1 .55-.794c.21-.149.38-.226.564-.226.501 0 .753.252.753.756v3.953h2.4V8.736c0-1.078-.32-1.928-.96-2.55-.638-.622-1.486-.933-2.543-.933-.654 0-1.198.143-1.633.43-.435.286-.74.66-.916 1.12V5.886H6.516a32 32 0 0 1 .025 1.41v4.952z"/>
+                </svg>
+                <span>Message</span>
+              </a>
             </div>
           </div>
         </div>
@@ -97,17 +112,17 @@ export default function HomePage() {
           {selected.map((p) => (
             <li
               key={p.slug}
-              className="group relative flex items-start gap-5 py-5"
+              className="group relative flex items-start md:items-center gap-5 md:gap-6 py-5 md:py-6"
             >
               <Link
                 href={`/projects/${p.slug}`}
                 aria-label={p.metadata.title}
                 className="absolute inset-0"
               />
-              <div className="w-20 h-12 sm:w-24 sm:h-14 flex-shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
-                {p.metadata.thumbnail && (
+              <div className="w-20 h-12 sm:w-24 sm:h-14 md:w-48 md:h-28 flex-shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+                {(p.metadata.thumb || p.metadata.thumbnail) && (
                   <img
-                    src={p.metadata.thumbnail}
+                    src={p.metadata.thumb || p.metadata.thumbnail}
                     alt=""
                     loading="lazy"
                     className="w-full h-full object-cover"

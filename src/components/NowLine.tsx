@@ -17,7 +17,7 @@ export default function NowLine() {
         href={POSITIONING_COMPANY_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-gray-700 dark:text-gray-300 underline decoration-gray-300 dark:decoration-gray-700 underline-offset-2 hover:decoration-gray-900 dark:hover:decoration-gray-100 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+        className="text-gray-900 dark:text-gray-100 underline decoration-accent/40 dark:decoration-accent-dark/40 underline-offset-2 hover:text-accent dark:hover:text-accent-dark hover:decoration-accent dark:hover:decoration-accent-dark transition-colors"
       >
         {POSITIONING_COMPANY}
       </a>
