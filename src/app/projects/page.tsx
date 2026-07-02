@@ -9,7 +9,7 @@ export const metadata = {
 
 function ProjectRow({ p }: { p: Project }) {
   return (
-    <li className="group relative flex items-start gap-5 md:gap-8 py-5 md:py-7">
+    <li className="group relative flex items-start gap-5 md:gap-8 -mx-3 px-3 py-5 md:py-7 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-gray-900/60">
       <Link
         href={`/projects/${p.slug}`}
         aria-label={p.title}
@@ -99,7 +99,7 @@ export default function ProjectsPage() {
         <h2 className="font-mono text-[11px] uppercase tracking-[0.12em] text-gray-500 dark:text-gray-500 mb-2">
           Agentic Applications
         </h2>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-800 border-y border-gray-200 dark:border-gray-800">
+        <ul className="space-y-2">
           {agentic.map((p) => (
             <ProjectRow key={p.slug} p={p} />
           ))}
@@ -110,7 +110,7 @@ export default function ProjectsPage() {
         <h2 className="font-mono text-[11px] uppercase tracking-[0.12em] text-gray-500 dark:text-gray-500 mb-2">
           GenAI for Media
         </h2>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-800 border-y border-gray-200 dark:border-gray-800">
+        <ul className="space-y-2">
           {media.map((p) => (
             <ProjectRow key={p.slug} p={p} />
           ))}

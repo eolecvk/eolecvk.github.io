@@ -40,16 +40,9 @@ export default function HomePage() {
             <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-500 font-mono">
               {ROLE}
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {PILLS.slice(0, 2).map((pill) => (
-                <span
-                  key={pill}
-                  className="rounded-full border border-gray-200 dark:border-gray-800 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500 dark:text-gray-400"
-                >
-                  {pill}
-                </span>
-              ))}
-            </div>
+            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500 dark:text-gray-400">
+              {PILLS.slice(0, 2).join('  ·  ')}
+            </p>
             <div className="mt-5 grid grid-cols-2 gap-3 max-w-md">
               <a
                 href={CAL_ENABLED ? CAL_URL : LINKEDIN_URL}
@@ -104,11 +97,11 @@ export default function HomePage() {
 
       {/* Selected work */}
       <section className="mt-16 md:mt-20">
-        <ul className="divide-y divide-gray-200 dark:divide-gray-800 border-y border-gray-200 dark:border-gray-800">
+        <ul className="space-y-2">
           {selected.map((p) => (
             <li
               key={p.slug}
-              className="group relative flex items-start gap-5 md:gap-8 py-5 md:py-7"
+              className="group relative flex items-start gap-5 md:gap-8 -mx-3 px-3 py-5 md:py-7 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-gray-900/60"
             >
               <Link
                 href={`/projects/${p.slug}`}

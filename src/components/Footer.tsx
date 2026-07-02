@@ -2,7 +2,7 @@ import { LINKS, CAL_URL, CAL_ENABLED, LINKEDIN_URL } from '@/lib/profile'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-800 mt-24">
+    <footer className="mt-24">
       <div className="max-w-4xl mx-auto px-6 py-10">
         <nav
           className="flex flex-wrap items-baseline justify-center gap-12 md:gap-20 text-sm text-gray-500 dark:text-gray-500"
