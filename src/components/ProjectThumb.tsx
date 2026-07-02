@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ProjectThumbProps {
   poster: string
@@ -11,6 +11,8 @@ interface ProjectThumbProps {
 
 export default function ProjectThumb({ poster, video, alt = '', className }: ProjectThumbProps) {
   const [playVideo, setPlayVideo] = useState(false)
+  const [inView, setInView] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
     if (!video) return
@@ -18,7 +20,30 @@ export default function ProjectThumb({ poster, video, alt = '', className }: Pro
     setPlayVideo(!query.matches)
   }, [video])
 
-  if (playVideo && video) {
+  // Only mount the video once the thumbnail nears the viewport, so
+  // below-the-fold rows don't eagerly download every mp4 on the page.
+  useEffect(() => {
+    if (!video || inView) return
+    const el = imgRef.current
+    if (!el) return
+    if (!('IntersectionObserver' in window)) {
+      setInView(true)
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [video, inView])
+
+  if (playVideo && inView && video) {
     return (
       <video
         className={className}
@@ -34,5 +59,5 @@ export default function ProjectThumb({ poster, video, alt = '', className }: Pro
     )
   }
 
-  return <img src={poster} alt={alt} loading="lazy" className={className} />
+  return <img ref={imgRef} src={poster} alt={alt} loading="lazy" className={className} />
 }
