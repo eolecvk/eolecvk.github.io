@@ -22,9 +22,11 @@ MDX project content, deployed as static output (`images: { unoptimized: true }`)
   (#8B9BFF), defined in `tailwind.config.js`. Used only for active nav
   underline, the hero company link, primary CTA hover, and focus rings.
   Everything else stays grayscale. Do not introduce new colors.
-- **Layout rail.** All page containers align to `max-w-3xl` (matching
-  header/footer). Keep the single-column, minimal identity - no card grids,
-  no sidebars.
+- **Layout rail.** Header, Footer, and nav-level pages (`/`, `/projects`,
+  `/about`) align to `max-w-4xl`. The project detail page (`/projects/[slug]`)
+  stays narrower (`max-w-2xl`) for prose reading width - that's an
+  intentional exception, not a bug. Keep the single-column, minimal identity -
+  no card grids, no sidebars.
 - **Profile data is centralized** in `src/lib/profile.ts` (name, role,
   positioning, links, pills, domain). Never hardcode these in components.
 - **Motion respects `prefers-reduced-motion`** - any new animation needs a
