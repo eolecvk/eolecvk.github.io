@@ -7,8 +7,9 @@
 # testing
 /coverage
 
-# next.js
-/.next/
+# next.js — match .next/ anywhere, so a stray dev build inside public/
+# can't get committed again (a .next/trace once shipped to production)
+.next/
 /out/
 dist/
 
