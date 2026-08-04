@@ -29,7 +29,30 @@
   }
 
   .prose blockquote {
-    @apply bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200;
+    @apply bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200 dark:border-gray-600;
+  }
+
+  /* The typography config hardcodes light-gray borders and underline colors;
+     they need explicit dark-mode counterparts (prose-invert only swaps the
+     variable-driven colors, not explicit values). */
+  .prose pre {
+    @apply dark:border-gray-700;
+  }
+
+  .prose thead {
+    @apply dark:border-gray-600;
+  }
+
+  .prose tbody tr {
+    @apply dark:border-gray-800;
+  }
+
+  .prose hr {
+    @apply dark:border-gray-800;
+  }
+
+  .prose a {
+    @apply dark:decoration-gray-700 dark:hover:decoration-gray-100;
   }
 
   /* Resume page — monospace tag-strip for the stack line */
@@ -65,59 +88,16 @@
   }
 }
 
-/* Custom animations */
-@layer utilities {
-  .fade-in {
-    animation: fadeIn 0.5s ease-in;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  to {
+    opacity: 1;
   }
-}
-
-/* Lab page dark override — forces dark styling on body, header, footer */
-body.lab-dark {
-  @apply bg-dark text-gray-100;
-}
-body.lab-dark header {
-  @apply border-gray-800;
-}
-body.lab-dark footer {
-  @apply bg-dark border-gray-700;
-}
-body.lab-dark footer p {
-  @apply text-gray-400;
-}
-body.lab-dark footer svg {
-  @apply text-gray-300;
-}
-
-/* Marquee animation for company logos */
-@keyframes scroll-dynamic {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-1 * var(--marquee-width)));
-  }
-}
-
-.animate-scroll-dynamic {
-  animation: scroll-dynamic 30s linear infinite;
-  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-scroll-dynamic {
-    animation: none;
-  }
-
   #main {
     animation: none;
   }

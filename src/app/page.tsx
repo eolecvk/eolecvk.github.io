@@ -11,6 +11,10 @@ import {
   PILLS,
 } from '@/lib/profile'
 
+export const metadata = {
+  alternates: { canonical: '/' },
+}
+
 const SELECTED_SLUGS = [
   'strike-the-pose',
   'llm-pipeline',

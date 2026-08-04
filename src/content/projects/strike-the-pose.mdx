@@ -22,31 +22,41 @@ One free-form prompt + a brand logo → a 4-second clip of a model walking in br
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="https://raw.githubusercontent.com/eolecvk/strike-the-pose/main/assets/outputs/20260519_053844_c2e53f/raw_preview.webp" alt="navy canvas sneakers, misty harbor at dawn, VHS grain" width="440" />
-      <br/><sub><em>navy canvas, misty harbor at dawn, VHS grain</em></sub>
+      <video autoplay loop muted playsinline preload="metadata" poster="/images/projects/strike-the-pose/harbor-poster.webp" width="440">
+        <source src="/images/projects/strike-the-pose/harbor.mp4" type="video/mp4" />
+      </video>
+      <sub><em>navy canvas, misty harbor at dawn, VHS grain</em></sub>
     </td>
     <td align="center" width="50%">
-      <img src="https://raw.githubusercontent.com/eolecvk/strike-the-pose/main/assets/outputs/20260519_021725_15b486/raw_preview.webp" alt="cream low-top in a minimalist studio, B&W film" width="440" />
-      <br/><sub><em>cream low-top, minimalist studio, B&amp;W</em></sub>
+      <video autoplay loop muted playsinline preload="metadata" poster="/images/projects/strike-the-pose/studio-poster.webp" width="440">
+        <source src="/images/projects/strike-the-pose/studio.mp4" type="video/mp4" />
+      </video>
+      <sub><em>cream low-top, minimalist studio, B&amp;W</em></sub>
     </td>
   </tr>
   <tr>
     <td align="center" width="50%">
-      <img src="https://raw.githubusercontent.com/eolecvk/strike-the-pose/main/assets/outputs/20260518_010401_eceeb4/raw_preview.webp" alt="all-black runners on wet pavement neon" width="440" />
-      <br/><sub><em>all-black runners, wet pavement neon</em></sub>
+      <video autoplay loop muted playsinline preload="metadata" poster="/images/projects/strike-the-pose/neon-poster.webp" width="440">
+        <source src="/images/projects/strike-the-pose/neon.mp4" type="video/mp4" />
+      </video>
+      <sub><em>all-black runners, wet pavement neon</em></sub>
     </td>
     <td align="center" width="50%">
-      <img src="https://raw.githubusercontent.com/eolecvk/strike-the-pose/main/assets/outputs/20260518_011335_bcff05/raw_preview.webp" alt="olive suede runner on a forest trail" width="440" />
-      <br/><sub><em>olive suede, forest trail</em></sub>
+      <video autoplay loop muted playsinline preload="metadata" poster="/images/projects/strike-the-pose/forest-poster.webp" width="440">
+        <source src="/images/projects/strike-the-pose/forest.mp4" type="video/mp4" />
+      </video>
+      <sub><em>olive suede, forest trail</em></sub>
     </td>
   </tr>
 </table>
+
+![Pipeline architecture — prompt + logo through compose, likeness gate, scene, and motion stages](/images/projects/arcade/architecture.svg)
 
 ## Product shot
 
 <br />
 <p align="center">
-  <img src="https://raw.githubusercontent.com/eolecvk/strike-the-pose/main/assets/outputs/20260518_005807_80b36e/product_shot.png" alt="navy canvas shoe with arcade logo on lateral panel" width="220" />
+  <img src="/images/projects/strike-the-pose/product-shot.webp" alt="navy canvas shoe with arcade logo on lateral panel" width="220" />
 </p>
 <br />
 
@@ -60,7 +70,7 @@ One free-form prompt + a brand logo → a 4-second clip of a model walking in br
 
 <br />
 <p align="center">
-  <img src="https://raw.githubusercontent.com/eolecvk/strike-the-pose/main/assets/outputs/20260518_005807_80b36e/scene_seed.png" alt="model wearing the navy canvas shoes on a misty harbor dock" width="320" />
+  <img src="/images/projects/strike-the-pose/scene-seed.webp" alt="scene seed — model wearing the navy canvas shoes on a misty harbor dock" width="320" />
 </p>
 <br />
 
@@ -72,7 +82,9 @@ One free-form prompt + a brand logo → a 4-second clip of a model walking in br
 
 <br />
 <p align="center">
-  <img src="https://raw.githubusercontent.com/eolecvk/strike-the-pose/main/assets/outputs/20260518_005807_80b36e/raw_preview.webp" alt="4-second walk video preview" width="320" />
+  <video autoplay loop muted playsinline preload="metadata" poster="/images/projects/strike-the-pose/navy-poster.webp" width="320" style="margin:0 auto">
+    <source src="/images/projects/strike-the-pose/navy.mp4" type="video/mp4" />
+  </video>
   <br/>
   <sub>4 s @ 16 fps, 1280×720</sub>
 </p>
@@ -94,14 +106,19 @@ Two write-ups from the lab notebook. Each isolates a single load-bearing questio
     <th>Headline finding</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/eolecvk/strike-the-pose/blob/main/experiments/likeness-retry-gate/report.md">Likeness-retry gate</a></td>
+    <td>Likeness-retry gate</td>
     <td>VLM gate cuts the logo-failure rate from 50% to 12%. Three retries captures almost all of the win.</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/eolecvk/strike-the-pose/blob/main/experiments/aesthetic-rigging/report.md">Setting an aesthetic</a></td>
+    <td>Setting an aesthetic</td>
     <td>Style directives are invisible to the motion model, visible at the still-image step, and destructive in a separate restyle pass. Stronger paths: style LoRA, video-to-video filter.</td>
   </tr>
 </table>
+
+<p align="center">
+  <img src="/images/projects/arcade/logo_overlay_preview.webp" alt="likeness gate overlay — detected logo regions marked OK on both shoes" width="440" />
+  <br/><sub><em>the likeness gate checking detected logo regions before the clip leaves the stage</em></sub>
+</p>
 
 ## Next
 
@@ -112,5 +129,3 @@ Two write-ups from the lab notebook. Each isolates a single load-bearing questio
 ---
 
 **Stack:** Python · FLUX-dev · Qwen-Image-Edit-2511 · Wan 2.2 14B I2V · gpt-4o-mini (rewriter + likeness gate) · ComfyUI · OWLv2
-
-[Repo](https://github.com/eolecvk/strike-the-pose) · [Architecture](https://github.com/eolecvk/strike-the-pose/blob/main/docs/ARCHITECTURE.md) · [Deployment](https://github.com/eolecvk/strike-the-pose/blob/main/docs/USAGE.md)
