@@ -1,0 +1,63 @@
+---
+tag:
+  - LLM
+  - agents
+  - expert networks
+title: "Scout: AI That Finds Human Experts"
+tagline: "An agentic pipeline that turns a client question into a vetted shortlist of human experts — in minutes instead of days"
+description: "How I built Scout, an agentic expert-sourcing pipeline with human-in-the-loop gates, evidence-cited search, and why a plain chat session wasn't enough"
+intro: "Some questions can't be answered by a model or a search engine — they live in someone's head. Scout is an agentic pipeline that finds that someone, fast."
+thumbnail: /images/projects/scout/graph.webp
+thumb: /images/projects/thumbs/scout.webp
+date: 2026-08-04T00:00:00.000Z
+category: LLM applications
+---
+
+**TL;DR** — *During a technical-cofounder trial with an expert-network startup, I built Scout: an agent-driven pipeline that turns a client's knowledge question into a stack-ranked shortlist of human experts. It compresses an associate's multi-hour sourcing grind into a ~30-minute auditable run costing a few dollars — and it sourced a real expert call that was sold to a real client.*
+
+**Stack:** Claude agents (in-session, no LLM API calls), Python stdlib app, Crustdata + Exa people-data APIs, file-based state, Linear
+
+### Some questions still need a human
+
+For all the hype about AI replacing knowledge work, there is a class of questions no model can answer: *Why hasn't this consumer brand been acquired yet? How does this operator actually run VIP retention?* The answer lives in the head of someone who was in the room. Expert networks sell exactly that — they find that person and put them on a paid call with a hedge fund or PE firm doing diligence. One sold call grosses $400–500.
+
+The product is not information. The product is a **shortlist of the right humans**.
+
+### The bottleneck is sourcing speed
+
+Here is the brutal part of that business: the client sends the same brief to three or four competing networks and books calls with whoever delivers first. Outreach response is the slow, uncontrollable step — so to win, you need to go from brief to outreach within the first two or three hours. The funnel is wide: a search surfaces 500–600 profiles, maybe 30–40 are truly relevant, and two or three will actually get back to you. Missing a strong candidate is expensive; a noisy profile in the pool is cheap.
+
+Done by hand, sourcing is LinkedIn archaeology: research the industry, find anchor companies, reverse-engineer job titles and keywords from profiles, build boolean searches company by company, then eyeball the results — with a working rule of "if a search returns under ~400 profiles, review all of them manually."
+
+### What Scout does
+
+Scout replicates that associate workflow as a staged agent pipeline: understand the query → propose target companies → resolve entities and build an evidence-cited vocabulary → construct per-company searches → pull candidates from the data vendor → screen every profile against a rubric → deliver a tiered shortlist (Best / Great / Good / Average / Screened out), each with cited reasoning.
+
+<p align="center"><img src="/images/projects/scout/workspace.webp" alt="Scout workspace — briefs as cases moving through the pipeline" /></p>
+<p align="center"><em>Every brief is a case; every search is a pinned, replayable run.</em></p>
+
+A full run takes 25–35 minutes and costs pennies in vendor credits — against $400–500 gross per sold call, search cost is a rounding error. The existence proof came early: a call sold to a real client from a shortlist sourced entirely by the pipeline.
+
+### What the hard parts taught me
+
+**The old heuristics were human constraints.** The ~400-result review cap exists because that's what a person can eyeball in 30 minutes. An LLM screener costs tokens, not hours — so the right move flips: pull wide, screen everything, and treat *over-filtering* as the cardinal sin, because a missed expert is unrecoverable revenue.
+
+**Early mistakes compound.** The pipeline is sequential: a wrong assumption at the first stage poisons every stage after it, and some of those stages spend real money. One run researched "global" for a Europe-only brief; another invented target companies mid-pipeline; another read a brief asking for bankers and proposed ten operating companies and zero banks. Each failure became structure: a clarification gate before research starts, a company gate after which the set freezes (machine-enforced), a credit gate before vendor spend.
+
+**Trust requires citations.** The domain expert has to audit decisions they didn't make. So every search keyword cites the profiles it was harvested from, vocabulary is *selected* from cited evidence rather than generated fresh (identical briefs used to yield different searches), and the rule everywhere is null over guess.
+
+<p align="center"><img src="/images/projects/scout/run-trace.webp" alt="Scout run trace — stages, token counts, and gate approvals" /></p>
+<p align="center"><em>The run trace: every stage output, token count, and gate approval on the record.</em></p>
+
+### Why not just use Claude Code?
+
+Claude Code is the harness Scout runs on — but a chat session alone couldn't be the product:
+
+- **~8 human judgment calls per run.** Wrong assumptions cost time and money, and in this business time *is* the business. The gates are load-bearing, and the agent is capability-fenced so it physically cannot approve its own spend.
+- **Steps cost real money.** Vendor pulls are metered; spend needs an estimate and an approval, not an agent's enthusiasm.
+- **Consistency beats brilliance.** Every run pins the exact methodology version it ran on, so the founder's grading of run N is an apples-to-apples experiment against run N+1. Baseline runs even execute through a "blind executor" — a tool-starved subagent that can't see the repo — so a context-rich session can't contaminate the comparison.
+- **People-data stays local.** No LLM API calls at all: all judgment runs in-session on a subscription, at zero marginal token cost, and transcripts and profiles never leave the machine.
+
+### Where this goes
+
+Today the loop is: human takes a complex question, AI finds the humans who can answer it. The interesting future is the inverted loop — an agent working through a complex task recognizes that a sub-question exceeds what any document can answer, sources the right human expert, and *proactively asks them*. Expert sourcing stops being a business process and becomes a tool call: humans in the loop not as supervisors, but as the scarcest, highest-value data source an agentic system can query.

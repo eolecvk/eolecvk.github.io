@@ -21,6 +21,7 @@ SOURCES = {
     "financial-analyst-chatbot": "images/projects/financial-analyst-chatbot-hero.webp",
     "llm-pipeline": "images/projects/ml-times.webp",
     "stable-diffusion-benchmark": "images/projects/sd-bench-1.webp",
+    "scout": "images/projects/scout/graph-nodes.webp",
     "stable-diffusion-finetuning": "images/projects/naruto-sd.webp",
     "strike-the-pose": "images/projects/arcade/raw_preview.webp",
 }
