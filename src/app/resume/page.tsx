@@ -1,24 +1,13 @@
-'use client'
+import type { Metadata } from 'next'
+import RedirectToAbout from '@/components/RedirectToAbout'
 
-import { useEffect } from 'react'
+// Legacy URL — the resume now lives on /about. Keep the page as a redirect
+// stub, but out of search indexes and pointing crawlers at the real page.
+export const metadata: Metadata = {
+  robots: { index: false },
+  alternates: { canonical: '/about/' },
+}
 
 export default function ResumeRedirect() {
-  useEffect(() => {
-    window.location.replace('/about')
-  }, [])
-
-  return (
-    <div className="max-w-2xl mx-auto px-6 py-20 text-center text-sm text-gray-500 dark:text-gray-500">
-      <p>
-        Redirecting to{' '}
-        <a
-          href="/about"
-          className="underline decoration-gray-300 dark:decoration-gray-700 underline-offset-4 hover:text-gray-900 dark:hover:text-gray-100"
-        >
-          /about
-        </a>
-        …
-      </p>
-    </div>
-  )
+  return <RedirectToAbout />
 }

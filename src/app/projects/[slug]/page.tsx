@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeHighlight from 'rehype-highlight'
+import ArticleVideo from '@/components/ArticleVideo'
 
 export async function generateStaticParams() {
   const slugs = getAllProjectSlugs()
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${project.metadata.title} - Eole Cervenka`,
     description: project.metadata.description,
+    alternates: { canonical: `/projects/${params.slug}/` },
     openGraph: {
       title: project.metadata.title,
       description: project.metadata.description,
@@ -145,6 +147,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               img: ({ node, ...props }) => (
                 <img className="max-w-full h-auto" loading="lazy" {...props} />
               ),
+              video: ({ node, ...props }) => <ArticleVideo {...props} />,
             }}
           >
             {project.content}

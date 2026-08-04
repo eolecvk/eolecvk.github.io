@@ -6,6 +6,7 @@ import ProjectThumb from '@/components/ProjectThumb'
 export const metadata = {
   title: 'Projects - Eole Cervenka',
   description: 'AI/ML Engineering Projects',
+  alternates: { canonical: '/projects/' },
 }
 
 function ProjectRow({ p }: { p: Project }) {

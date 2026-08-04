@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://eolecvk.com'),
   title: 'Eole Cervenka',
-  description: 'AI/ML Engineer - Projects and Resume',
+  description: 'ML engineer building production systems for LLM and generative AI applications',
   authors: [{ name: 'Eole Cervenka' }],
   creator: 'Eole Cervenka',
   icons: {

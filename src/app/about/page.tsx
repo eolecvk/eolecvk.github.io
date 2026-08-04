@@ -7,6 +7,7 @@ import {
 export const metadata = {
   title: 'About - Eole Cervenka',
   description: 'Machine Learning Engineer — bio, experience, and contact.',
+  alternates: { canonical: '/about/' },
 }
 
 const PERSON_LD = {
