@@ -1,0 +1,92 @@
+---
+tag:
+  - computer vision
+  - VLM
+  - pipelines
+title: "CarStudio: A Phone Video In, a Car Listing Out"
+tagline: "A video-to-listing-pack pipeline for used-car dealers — deterministic where it must be, a local VLM only where judgment is needed"
+description: "How I built CarStudio, a pipeline that turns a 90-second phone walkaround into publishable listing photos, decoded specs, and portal-ready text — with compliance rules encoded in the architecture instead of a policy doc"
+intro: "French used-car listings are starving for photos. CarStudio turns one phone walkaround video into a publishable listing pack — and its enhancement stage is structurally incapable of lying about the car."
+liveUrl: https://carstudio-app.fly.dev/fr/
+thumbnail: /images/projects/carstudio/landing.webp
+thumb: /images/projects/thumbs/carstudio.webp
+date: 2026-08-18T00:00:00.000Z
+category: Image/Video
+---
+
+**TL;DR** — *CarStudio is a video-to-listing-pack pipeline for used-car dealers: one ~90-second phone walkaround in, a publishable pack out — 10–14 curated and enhanced photos in a fixed shot order, plate-decoded specs, and listing text formatted per portal. It runs as a deterministic DAG on my own GPU box, uses a local VLM only at judgment points, and encodes French portal compliance and GDPR in code rather than in a checklist. It's live, concierge-operated, and priced at 9,30 € per pack.*
+
+**Stack:** Python/FastAPI, ffmpeg, YOLO-class detection, Qwen2.5-VL served locally via vLLM (OpenAI-compatible), SQLite job queue, Fly.io
+
+### The gap is capture, not distribution
+
+Independent French used-car dealers (*marchands VO*) under-produce listing media to a degree that's hard to believe until you browse leboncoin: plenty of listings carry a single photo, some none at all. The tooling ecosystem has solved *distribution* — multi-posting a listing to every portal is a commoditized service several vendors sell. Nobody solves the step before it: getting publishable photos and correct listing data out of a car sitting on a rainy lot.
+
+That step is exactly the kind of grunt work a pipeline can eat. A dealer already walks around every car with a phone in their pocket. So the product contract is deliberately minimal: film one slow walkaround (~90 seconds, guided by a one-page shooting protocol), send the file, get back a pack you can publish. Five minutes of phone time, delivery within 24 hours, first pack free.
+
+### What the dealer sees
+
+The dealer-facing studio is intentionally boring: drop in what you have — a video, a couple of free photos, a voice memo about condition — and press one button.
+
+<p align="center"><img src="/images/projects/carstudio/studio-inputs.webp" alt="Studio inputs — a 23-second video, a dashboard photo, a voice memo" /></p>
+<p align="center"><em>The demo pack's entire input: a 23-second video, one dashboard photo, and a 12-second voice memo ("it's mint, just the front-right rim").</em></p>
+
+Out comes the pack: exterior shots classified into a fixed template (front 3/4 hero, front, profiles, rear 3/4, rear, close-ups…), an ad preview per portal, and a spec sheet. Missing slots aren't papered over — they're shown as gaps the dealer can fill with a single extra photo.
+
+<p align="center"><img src="/images/projects/carstudio/studio-pack.webp" alt="Generated pack — six exterior shots filled into the template, missing slots shown as gaps" /></p>
+<p align="center"><em>Auto-filled shot template from the walkaround. Empty slots ask for one more photo instead of pretending.</em></p>
+
+<p align="center"><img src="/images/projects/carstudio/studio-annonce.webp" alt="Listing preview rendered as a leboncoin ad" /></p>
+<p align="center"><em>The listing text, previewed in the portal's own clothes — leboncoin, LaCentrale, or the dealer's site.</em></p>
+
+### The architecture: a DAG with a VLM at the judgment points
+
+Under the hood CarStudio is a deterministic pipeline, not an agent:
+
+```
+upload → ingest → frame scoring & shot classification
+       → data extraction (plate → SIV specs; odometer OCR)
+       → listing text generation (grounded)
+       → operator review → enhancement (selected frames only)
+       → packaging → ZIP
+```
+
+ffmpeg extracts a working set of frames; classical scoring (sharpness on the vehicle mask, exposure, framing) ranks them; a VLM is consulted only where actual judgment is required — which of the template's 13 shot classes a frame belongs to, what the plate reads, whether the listing draft needs polish. The VLM is a Qwen2.5-VL-class model served on my own 2×A6000 box behind an OpenAI-compatible endpoint, so inference is free at the margin, dealer footage never leaves the machine, and moving to a hosted endpoint later is a one-line `base_url` change.
+
+Two structural choices I'd defend hard:
+
+- **The pipeline completes even with no VLM running.** Every model call degrades to "flag this slot for the operator" instead of failing the job. The model is a guest in the pipeline, not its backbone.
+- **SQLite is the whole backend** — vehicle records *and* the job queue, executed by one polling worker. At single-node MVP scale, Redis and Celery are complexity cosplay; every stage is idempotent and re-runnable per vehicle, which is the property that actually matters when a run goes sideways.
+
+### Compliance is encoded, not documented
+
+This is the part of the project I find genuinely interesting. Used-car portals have strict and slightly contradictory rules — LaCentrale's photo charter effectively excludes background cutouts, Facebook Marketplace flags studio-look images, leboncoin forbids promotional overlays — and above all of it sits the obvious integrity question: an AI pipeline that "enhances" car photos is one prompt away from erasing a scratch someone paid to know about.
+
+CarStudio's answer is to make the violations unrepresentable:
+
+- **The enhancement stage is structurally incapable of generative edits.** It's signal processing only — denoise, upscale, white balance, one consistent tone curve — plus background *treatment* limited to a vignette. There is no inpainting path in the code. Defects survive enhancement unaltered, and the operator can flag up to three defect close-ups per pack, because French portal guidance treats showing defects as a trust signal.
+- **Listing text is template-filled from the decoded spec sheet** (plate → SIV registry lookup) plus the dealer's own condition notes. The optional LLM polish pass is checked by a grounding diff — any fact that can't be traced to a source falls back to the deterministic draft. The model cannot invent an owner count or a service history because the text path won't accept one.
+- **GDPR as pipeline stages:** plate and face blur on every published frame, raw videos auto-purged after 14 days, SIV lookups scoped and logged.
+
+### Concierge first, and an audit trail for everything
+
+Every pack passes through an operator console before delivery — swap a chosen frame for an alternate, confirm the odometer, mark defects, approve, package. Concierge operation is not a temporary embarrassment; it's how the quality bar gets defined before automation chases it.
+
+<p align="center"><img src="/images/projects/carstudio/review-ui.webp" alt="Operator review console — shot slots with alternates, confidence, and listing data" /></p>
+<p align="center"><em>The operator console: per-slot candidates with scores, low-confidence slots flagged, listing data confirmed by a human before anything ships.</em></p>
+
+Because the pipeline is deterministic, every run leaves a complete trace — and the trace page turned out to be the artifact I show people first. Per stage: what came in, what was decided, what went out.
+
+<p align="center"><img src="/images/projects/carstudio/run-summary.webp" alt="Pipeline run summary — six stages with their outputs" /></p>
+<p align="center"><em>One 23-second AV1 video → 92 working frames → 6 filled slots → 2 spec flags → 6 crops, 5/5 plates blurred → a French listing → 19 packaged files.</em></p>
+
+<p align="center"><img src="/images/projects/carstudio/run-crop-decision.webp" alt="Run trace — crop decisions drawn on source frames next to delivered photos" /></p>
+<p align="center"><em>Every crop decision on the record: detected vehicle box, spec crop vs best-effort, and the delivered photo beside its source frame.</em></p>
+
+### What building it taught me
+
+**Constraints make better products than capabilities.** The most load-bearing code in CarStudio is code that *removes* ability — the enhancer that can't inpaint, the text generator that can't free-generate. In a market where the customer's customer is deciding whether to trust a stranger's car photos, "our pipeline cannot lie about the vehicle" is the feature.
+
+**Local-first VLM inference changes the economics of judgment.** When a model call costs nothing at the margin, you stop rationing classification and start using it anywhere a heuristic would be brittle — while keeping the architecture honest enough that the model's absence degrades the product instead of breaking it.
+
+**The demo asset is the spec.** The acceptance test I set myself was that a pack built from a *bad* input — short, shaky, single pass — still had to be publishable. The live demo pack is generated from 23 seconds of video of a Mercedes G580 doing a tank turn in a parking lot. If that yields a publishable six-photo exterior set with blurred plates and a grounded French listing, a dealer's honest 90-second walkaround is easy mode.
